@@ -40,7 +40,7 @@ public class Member {
 
   @Enumerated(EnumType.STRING)
   private MemberRole role;
-  
+
   private boolean isActive = true;
 
   @Builder
@@ -56,10 +56,10 @@ public class Member {
     this.role = role;
   }
 
-  public static Member createMember(MemberJoinRequest request) {
+  public static Member createMember(MemberJoinRequest request, String encodedPassword) {
     return Member.builder()
         .email(request.getEmail())
-        .password(request.getPassword())
+        .password(encodedPassword)
         .name(request.getName())
         .age(request.getAge())
         .gender(request.getGender())
