@@ -2,8 +2,10 @@ package com.paytogether.domain.member.service;
 
 import com.paytogether.domain.member.entity.Member;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class MemberJoinResponse {
 
   private String email;
