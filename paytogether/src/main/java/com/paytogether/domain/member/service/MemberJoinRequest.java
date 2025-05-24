@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -33,4 +34,16 @@ public class MemberJoinRequest {
   private int age;
 
   private Gender gender;
+
+  @Builder
+  private MemberJoinRequest(String email, String password, String address, String phoneNumber,
+      String name, int age, Gender gender) {
+    this.email = email;
+    this.password = password;
+    this.address = address;
+    this.phoneNumber = phoneNumber;
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+  }
 }
