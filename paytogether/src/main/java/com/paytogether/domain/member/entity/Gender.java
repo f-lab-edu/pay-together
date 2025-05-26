@@ -1,9 +1,8 @@
 package com.paytogether.domain.member.entity;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
+
 @RequiredArgsConstructor
 public enum Gender {
 
@@ -11,5 +10,5 @@ public enum Gender {
   FEMALE("여"),
   OTHER("그외");
 
-  private final String text;
+  private final String explain;
 }
