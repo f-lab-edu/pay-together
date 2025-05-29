@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.paytogether.domain.member.entity.Gender;
 import com.paytogether.domain.member.entity.Member;
+import com.paytogether.domain.member.entity.MemberRole;
 import com.paytogether.domain.member.service.MemberJoinRequest;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -27,11 +28,19 @@ class MemberRepositoryTest {
         .email("pay@spring.com")
         .phoneNumber("01012345678")
         .build();
-    Member m = Member.createMember(request, "encodedPassword");
+    Member m = createMember(request, "encodedPassword");
     memberRepository.save(m);
 
     Optional<Member> result = memberRepository.findByEmail("pay@spring.com");
 
     assertThat(result).isNotNull();
+  }
+
+  private Member createMember(MemberJoinRequest request, String encodedPassword) {
+    return Member.builder()
+        .email(request.getEmail()).password(encodedPassword).name(request.getName())
+        .age(request.getAge()).gender(request.getGender()).address(request.getAddress())
+        .phoneNumber(request.getPhoneNumber()).role(MemberRole.MEMBER)
+        .build();
   }
 }

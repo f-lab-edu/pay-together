@@ -6,8 +6,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.paytogether.domain.member.entity.Gender;
 import com.paytogether.domain.member.entity.Member;
+import com.paytogether.domain.member.entity.MemberRole;
 import com.paytogether.domain.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpSession;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,27 +22,26 @@ class SessionLoginServiceTest {
 
   @Autowired
   private HttpSession httpSession;
-
   @Autowired
   private LoginService loginService;
-
   @Autowired
   private MemberRepository memberRepository;
-
   @Autowired
   private PasswordEncoder passwordEncoder;
 
+  @DisplayName("사용자가 로그인 시도를 성공하면 세션에 있는 사용자의 고유 id와 일치해야 한다")
   @Test
   void login_success() {
     String password = "1234!678";
     String email = "pay@spring.com";
     Member beforeLoginMember = createMember(email, password);
     memberRepository.save(beforeLoginMember);
+    Long memberId = beforeLoginMember.getId();
 
     loginService.login(email, password);
 
-    Long afterLoginMemberId = (Long) httpSession.getAttribute(LOGIN_MEMBER);
-    assertThat(beforeLoginMember.getId()).isEqualTo(afterLoginMemberId);
+    Long memberIdInSession = (Long) httpSession.getAttribute(LOGIN_MEMBER);
+    assertThat(memberId).isEqualTo(memberIdInSession);
   }
 
   @Test
@@ -95,6 +96,14 @@ class SessionLoginServiceTest {
         .phoneNumber("01012345678")
         .build();
     String encoded = passwordEncoder.encode(password);
-    return Member.createMember(request, encoded);
+    return createMember(request, encoded);
+  }
+
+  private Member createMember(MemberJoinRequest request, String encodedPassword) {
+    return Member.builder()
+        .email(request.getEmail()).password(encodedPassword).name(request.getName())
+        .age(request.getAge()).gender(request.getGender()).address(request.getAddress())
+        .phoneNumber(request.getPhoneNumber()).role(MemberRole.MEMBER)
+        .build();
   }
 }

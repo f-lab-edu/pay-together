@@ -17,7 +17,12 @@ public class MemberService {
   @Transactional
   public MemberJoinResponse join(MemberJoinRequest request) {
     String encodedPassword = passwordEncoder.encode(request.getPassword());
-    Member member = memberRepository.save(Member.createMember(request, encodedPassword));
+    Member member = memberRepository.save(
+        Member.createMember(
+            request.getEmail(), encodedPassword, request.getName(), request.getAge(),
+            request.getGender(), request.getAddress(), request.getPhoneNumber())
+    );
+
     return MemberJoinResponse.from(member);
   }
 }

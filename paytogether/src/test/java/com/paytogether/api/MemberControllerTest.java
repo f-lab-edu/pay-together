@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytogether.config.TestSecurityConfig;
 import com.paytogether.domain.member.entity.Gender;
 import com.paytogether.domain.member.entity.Member;
+import com.paytogether.domain.member.entity.MemberRole;
 import com.paytogether.domain.member.service.LoginService;
 import com.paytogether.domain.member.service.MemberJoinRequest;
 import com.paytogether.domain.member.service.MemberJoinResponse;
@@ -54,7 +55,7 @@ class MemberControllerTest {
         .email(email)
         .phoneNumber("01012345678")
         .build();
-    Member member = Member.createMember(request, password);
+    Member member = createMember(request, password);
     given(memberService.join(any(MemberJoinRequest.class))).willReturn(
         MemberJoinResponse.from(member));
 
@@ -118,16 +119,11 @@ class MemberControllerTest {
         .andExpect(status().isOk());
   }
 
-  private Member createMember(String email, String password) {
-    MemberJoinRequest request = MemberJoinRequest.builder()
-        .age(100)
-        .name("pay")
-        .gender(Gender.MALE)
-        .address("seoul")
-        .password(password)
-        .email(email)
-        .phoneNumber("01012345678")
+  private Member createMember(MemberJoinRequest request, String encodedPassword) {
+    return Member.builder()
+        .email(request.getEmail()).password(encodedPassword).name(request.getName())
+        .age(request.getAge()).gender(request.getGender()).address(request.getAddress())
+        .phoneNumber(request.getPhoneNumber()).role(MemberRole.MEMBER)
         .build();
-    return Member.createMember(request, password);
   }
 }

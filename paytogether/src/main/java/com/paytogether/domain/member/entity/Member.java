@@ -1,6 +1,5 @@
 package com.paytogether.domain.member.entity;
 
-import com.paytogether.domain.member.service.MemberJoinRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -56,16 +55,11 @@ public class Member {
     this.role = role;
   }
 
-  public static Member createMember(MemberJoinRequest request, String encodedPassword) {
+  public static Member createMember(String email, String encodedPassword, String name, int age,
+      Gender gender, String address, String phoneNumber) {
     return Member.builder()
-        .email(request.getEmail())
-        .password(encodedPassword)
-        .name(request.getName())
-        .age(request.getAge())
-        .gender(request.getGender())
-        .address(request.getAddress())
-        .phoneNumber(request.getPhoneNumber())
-        .role(MemberRole.MEMBER)
+        .email(email).password(encodedPassword).name(name).age(age)
+        .gender(gender).address(address).phoneNumber(phoneNumber).role(MemberRole.MEMBER)
         .build();
   }
 }
