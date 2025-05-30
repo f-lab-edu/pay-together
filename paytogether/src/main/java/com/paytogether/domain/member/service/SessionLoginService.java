@@ -25,13 +25,19 @@ public class SessionLoginService implements LoginService {
     if (optionalMember.isEmpty()) {
       throw new IllegalArgumentException();
     }
+
     Member presentMember = optionalMember.get();
     String encodedPassword = presentMember.getPassword();
     if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
       throw new IllegalArgumentException();
     }
+
+    if (sessionExists()) {
+      httpSession.invalidate();
+    }
+
     httpSession.setAttribute(LOGIN_MEMBER, presentMember.getId());
-    log.info("id = {}", httpSession.getId());
+    log.info("Session ID = {}, Member ID = {}", httpSession.getId(), presentMember.getId());
   }
 
   @Override
@@ -40,8 +46,8 @@ public class SessionLoginService implements LoginService {
   }
 
   @Override
-  public boolean sessionExists(HttpSession session) {
-    Object loginMemberId = session.getAttribute(LOGIN_MEMBER);
+  public boolean sessionExists() {
+    Object loginMemberId = httpSession.getAttribute(LOGIN_MEMBER);
     return Optional.ofNullable(loginMemberId).isPresent();
   }
 }

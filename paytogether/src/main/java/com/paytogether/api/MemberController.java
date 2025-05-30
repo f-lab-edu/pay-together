@@ -5,7 +5,6 @@ import com.paytogether.domain.member.service.MemberJoinRequest;
 import com.paytogether.domain.member.service.MemberJoinResponse;
 import com.paytogether.domain.member.service.MemberLoginRequest;
 import com.paytogether.domain.member.service.MemberService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +30,7 @@ public class MemberController {
   }
 
   @PostMapping("/member/logout")
-  public void logout(HttpSession session) {
-    if (loginService.sessionExists(session)) {
-      loginService.logout();
-    }
+  public void logout() {
+    loginService.logout();
   }
 }
