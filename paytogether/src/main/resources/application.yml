@@ -14,3 +14,13 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+
+  data:
+    redis:
+      host: localhost
+      password:
+      port: 6379
+
+  session:
+    redis:
+      namespace: session-pay
