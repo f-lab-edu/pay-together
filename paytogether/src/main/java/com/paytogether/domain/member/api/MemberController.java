@@ -1,4 +1,4 @@
-package com.paytogether.api;
+package com.paytogether.domain.member.api;
 
 import com.paytogether.domain.member.service.LoginService;
 import com.paytogether.domain.member.service.MemberJoinRequest;
