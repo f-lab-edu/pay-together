@@ -1,4 +1,4 @@
-package com.paytogether.api;
+package com.paytogether.domain.member.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytogether.config.TestSecurityConfig;
-import com.paytogether.domain.member.api.MemberController;
 import com.paytogether.domain.member.entity.Gender;
 import com.paytogether.domain.member.entity.Member;
 import com.paytogether.domain.member.entity.MemberRole;
