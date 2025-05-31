@@ -1,6 +1,6 @@
 package com.paytogether.domain.member.service;
 
-import static com.paytogether.domain.member.service.SessionLoginService.LOGIN_MEMBER;
+import static com.paytogether.domain.member.service.TestMemberConstant.LOGIN_MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -76,12 +76,12 @@ class SessionLoginServiceTest {
     memberRepository.save(beforeLoginMember);
 
     loginService.login(email, password);
-    Object login = httpSession.getAttribute(LOGIN_MEMBER);
+    Object login = httpSession.getAttribute(SessionLoginService.LOGIN_MEMBER);
     assertThat(login).isNotNull();
 
     loginService.logout();
 
-    Object logout = httpSession.getAttribute(LOGIN_MEMBER);
+    Object logout = httpSession.getAttribute(SessionLoginService.LOGIN_MEMBER);
     assertThat(logout).isNull();
   }
 
