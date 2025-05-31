@@ -1,5 +1,7 @@
 package com.paytogether.domain.member.service;
 
+import com.paytogether.common.exception.PayTogetherErrors;
+import com.paytogether.common.exception.PayTogetherException;
 import com.paytogether.domain.member.entity.Member;
 import com.paytogether.domain.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpSession;
@@ -20,24 +22,27 @@ public class SessionLoginService implements LoginService {
   private final HttpSession httpSession;
 
   @Override
-  public void login(String email, String rawPassword) {
+  public LoginResponse login(String email, String rawPassword) {
     Optional<Member> optionalMember = memberRepository.findByEmail(email);
     if (optionalMember.isEmpty()) {
-      throw new IllegalArgumentException();
+      throw new PayTogetherException(PayTogetherErrors.INVALID_INFO);
     }
 
     Member presentMember = optionalMember.get();
     String encodedPassword = presentMember.getPassword();
     if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-      throw new IllegalArgumentException();
+      throw new PayTogetherException(PayTogetherErrors.INVALID_INFO);
     }
 
+    boolean duplicateLogin = false;
     if (sessionExists()) {
       httpSession.invalidate();
+      duplicateLogin = true;
     }
 
     httpSession.setAttribute(LOGIN_MEMBER, presentMember.getId());
     log.info("Session ID = {}, Member ID = {}", httpSession.getId(), presentMember.getId());
+    return LoginResponse.of(presentMember.getEmail(), duplicateLogin);
   }
 
   @Override
