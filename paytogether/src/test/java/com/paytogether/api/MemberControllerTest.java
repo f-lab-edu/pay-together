@@ -9,15 +9,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytogether.config.TestSecurityConfig;
+import com.paytogether.domain.member.api.MemberController;
 import com.paytogether.domain.member.entity.Gender;
 import com.paytogether.domain.member.entity.Member;
 import com.paytogether.domain.member.entity.MemberRole;
+import com.paytogether.domain.member.service.LoginResponse;
 import com.paytogether.domain.member.service.LoginService;
 import com.paytogether.domain.member.service.MemberJoinRequest;
 import com.paytogether.domain.member.service.MemberJoinResponse;
 import com.paytogether.domain.member.service.MemberLoginRequest;
 import com.paytogether.domain.member.service.MemberService;
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -64,7 +65,7 @@ class MemberControllerTest {
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.email").value(email));
+        .andExpect(jsonPath("body.email").value(email));
   }
 
   @Test
@@ -90,13 +91,17 @@ class MemberControllerTest {
 
   @Test
   void login_success() throws Exception {
-    MemberLoginRequest request = new MemberLoginRequest("email@spring.com", "!!password");
+    String email = "email@spring.com";
+    String password = "!!password";
+    MemberLoginRequest request = new MemberLoginRequest(email, password);
+    given(loginService.login(email, password)).willReturn(LoginResponse.of(email, false));
 
     mockMvc.perform(post("/member/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
-        .andExpect(status().isOk());
+        .andExpect(status().is2xxSuccessful())
+        .andExpect(jsonPath("body.email").value(email));
   }
 
   @Test
@@ -112,7 +117,7 @@ class MemberControllerTest {
 
   @Test
   void logout_success() throws Exception {
-    given(loginService.sessionExists(any(HttpSession.class))).willReturn(true);
+    given(loginService.sessionExists()).willReturn(true);
 
     mockMvc.perform(post("/member/logout"))
         .andDo(print())
