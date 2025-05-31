@@ -1,0 +1,25 @@
+### 회원가입
+POST localhost:8080/member/join
+Content-Type: application/json
+
+{
+  "email": "pay@spring.com",
+  "password": "1234!234",
+  "name": "pay",
+  "age": 20,
+  "gender": "MALE",
+  "address": "seoul",
+  "phoneNumber": "01009000800"
+}
+
+### 로그인
+POST localhost:8080/member/login
+Content-Type: application/json
+
+{
+  "email": "pay@spring.com",
+  "password": "1234!234"
+}
+
+### 로그아웃
+POST localhost:8080/member/logout
