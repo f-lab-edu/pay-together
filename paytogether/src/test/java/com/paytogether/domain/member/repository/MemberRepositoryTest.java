@@ -19,6 +19,7 @@ class MemberRepositoryTest {
 
   @Test
   void findMemberByEmail() {
+    //given
     MemberJoinRequest request = MemberJoinRequest.builder()
         .age(100)
         .name("pay")
@@ -28,12 +29,15 @@ class MemberRepositoryTest {
         .email("pay@spring.com")
         .phoneNumber("01012345678")
         .build();
-    Member m = createMember(request, "encodedPassword");
-    memberRepository.save(m);
+    Member member = createMember(request, "encodedPassword");
+    memberRepository.save(member);
 
+    //when
     Optional<Member> result = memberRepository.findByEmail("pay@spring.com");
+    Member savedMember = result.get();
 
-    assertThat(result).isNotNull();
+    //then
+    assertThat(savedMember).isEqualTo(member);
   }
 
   private Member createMember(MemberJoinRequest request, String encodedPassword) {
