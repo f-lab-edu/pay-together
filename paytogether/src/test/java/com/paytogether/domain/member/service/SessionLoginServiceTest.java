@@ -4,6 +4,7 @@ import static com.paytogether.domain.member.service.TestMemberConstant.LOGIN_MEM
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.paytogether.common.exception.PayTogetherException;
 import com.paytogether.domain.member.entity.Gender;
 import com.paytogether.domain.member.entity.Member;
 import com.paytogether.domain.member.entity.MemberRole;
@@ -53,7 +54,7 @@ class SessionLoginServiceTest {
     memberRepository.save(beforeLoginMember);
 
     assertThatThrownBy(() -> loginService.login(wrongEmail, password))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(PayTogetherException.class);
   }
 
   @Test
@@ -65,7 +66,7 @@ class SessionLoginServiceTest {
     memberRepository.save(beforeLoginMember);
 
     assertThatThrownBy(() -> loginService.login(email, wrongPassword))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(PayTogetherException.class);
   }
 
   @Test
