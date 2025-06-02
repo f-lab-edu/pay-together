@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import com.paytogether.common.exception.PayTogetherException;
 import com.paytogether.common.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +32,14 @@ public class ControllerAdvice {
     return new ErrorResponse(
         BAD_REQUEST.value(),
         e.getError().getErrorMessage());
+  }
+
+  @ResponseStatus(code = BAD_REQUEST)
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ErrorResponse validationException(MethodArgumentNotValidException e) {
+    log.error("예외 발생 = {}", e.getMessage(), e);
+    return new ErrorResponse(
+        BAD_REQUEST.value(),
+        e.getMessage());
   }
 }
