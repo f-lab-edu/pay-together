@@ -81,7 +81,7 @@ class MemberJoinRequestValidationTest {
     softly.assertThat(violations).hasSize(1);
     softly.assertThat(violations)
         .extracting("message")
-        .contains("공백일 수 없습니다");
+        .contains("이메일 형식에 맞게 작성해주세요.");
     softly.assertAll();
   }
 
