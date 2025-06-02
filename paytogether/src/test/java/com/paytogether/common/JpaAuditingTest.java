@@ -1,8 +1,8 @@
 package com.paytogether.common;
 
-import com.paytogether.domain.member.entity.Gender;
-import com.paytogether.domain.member.entity.Member;
-import com.paytogether.domain.member.repository.MemberRepository;
+import com.paytogether.member.entity.Gender;
+import com.paytogether.member.entity.Member;
+import com.paytogether.member.repository.MemberRepository;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

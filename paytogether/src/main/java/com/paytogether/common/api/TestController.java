@@ -1,7 +1,7 @@
 package com.paytogether.common.api;
 
-import com.paytogether.common.exception.PayTogetherErrors;
-import com.paytogether.common.exception.PayTogetherException;
+import com.paytogether.exception.PayTogetherErrors;
+import com.paytogether.exception.PayTogetherException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
