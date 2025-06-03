@@ -6,6 +6,7 @@ import com.paytogether.member.entity.Gender;
 import com.paytogether.member.service.MemberJoinRequest;
 import com.paytogether.member.service.MemberJoinResponse;
 import com.paytogether.member.service.MemberService;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +33,7 @@ class MemberServiceTest {
         .phoneNumber("01012345678")
         .build();
 
-    MemberJoinResponse result = memberService.join(request);
+    MemberJoinResponse result = memberService.join(request, LocalDateTime.now());
 
     assertThat(request.getEmail()).isEqualTo(result.getEmail());
   }

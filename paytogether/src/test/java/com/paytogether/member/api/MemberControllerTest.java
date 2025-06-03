@@ -57,7 +57,7 @@ class MemberControllerTest {
         .phoneNumber("01012345678")
         .build();
     Member member = createMember(request, password);
-    given(memberService.join(any(MemberJoinRequest.class))).willReturn(
+    given(memberService.join(any(MemberJoinRequest.class), any())).willReturn(
         MemberJoinResponse.from(member));
 
     mockMvc.perform(post("/member/join")

@@ -7,7 +7,9 @@ import com.paytogether.member.entity.Member;
 import com.paytogether.member.entity.MemberRole;
 import com.paytogether.member.repository.MemberRepository;
 import com.paytogether.member.service.MemberJoinRequest;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -39,6 +41,23 @@ class MemberRepositoryTest {
 
     //then
     assertThat(savedMember).isEqualTo(member);
+  }
+
+  @Test
+  void saveTest() {
+    // given
+    LocalDateTime now = LocalDateTime.now();
+    Member member = Member.createMember("pay@spring.com", "1234567!", "pay", 100,
+        Gender.MALE, "address", "01012345678", now);
+
+    // when
+    Member savedMember = memberRepository.save(member);
+
+    // then
+    SoftAssertions softAssertions = new SoftAssertions();
+    softAssertions.assertThat(savedMember.getCreatedAt()).isEqualTo(now);
+    softAssertions.assertThat(savedMember).isEqualTo(member);
+    softAssertions.assertAll();
   }
 
   private Member createMember(MemberJoinRequest request, String encodedPassword) {
