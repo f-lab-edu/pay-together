@@ -1,6 +1,5 @@
 package com.paytogether.member.entity;
 
-import com.paytogether.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member extends BaseEntity {
+public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +43,12 @@ public class Member extends BaseEntity {
 
   private boolean isActive = true;
 
+  private LocalDateTime createdAt;
+  private LocalDateTime deactivatedAt;
+
   @Builder
   private Member(String email, String password, String name, int age, Gender gender, String address,
-      String phoneNumber, MemberRole role) {
+      String phoneNumber, MemberRole role, LocalDateTime createdAt) {
     this.email = email;
     this.password = password;
     this.name = name;
@@ -54,13 +57,19 @@ public class Member extends BaseEntity {
     this.address = address;
     this.phoneNumber = phoneNumber;
     this.role = role;
+    this.createdAt = createdAt;
   }
 
   public static Member createMember(String email, String encodedPassword, String name, int age,
-      Gender gender, String address, String phoneNumber) {
+      Gender gender, String address, String phoneNumber, LocalDateTime createdAt) {
     return Member.builder()
-        .email(email).password(encodedPassword).name(name).age(age)
-        .gender(gender).address(address).phoneNumber(phoneNumber).role(MemberRole.MEMBER)
+        .email(email).password(encodedPassword).name(name).age(age).gender(gender)
+        .address(address).phoneNumber(phoneNumber).role(MemberRole.MEMBER).createdAt(createdAt)
         .build();
+  }
+
+  public void deactivate(LocalDateTime deactivatedAt) {
+    this.isActive = false;
+    this.deactivatedAt = deactivatedAt;
   }
 }

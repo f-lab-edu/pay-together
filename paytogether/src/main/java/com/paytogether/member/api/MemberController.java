@@ -8,6 +8,7 @@ import com.paytogether.member.service.MemberJoinResponse;
 import com.paytogether.member.service.MemberLoginRequest;
 import com.paytogether.member.service.MemberService;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,8 @@ public class MemberController {
 
   @PostMapping("/member/join")
   public ApiResponse<MemberJoinResponse> join(@RequestBody @Valid MemberJoinRequest request) {
-    return ApiResponse.createResponse(HttpStatus.OK.value(), memberService.join(request));
+    LocalDateTime now = LocalDateTime.now();
+    return ApiResponse.createResponse(HttpStatus.OK.value(), memberService.join(request, now));
   }
 
   @PostMapping("/member/login")
