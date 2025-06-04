@@ -4,10 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
-import com.paytogether.member.entity.MemberRole;
 import com.paytogether.member.repository.MemberRepository;
-import com.paytogether.member.service.MemberJoinRequest;
-import com.paytogether.member.service.MemberLoginRequest;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +27,15 @@ public class SessionMVCTest {
 
   @BeforeEach
   void setUp() {
-    memberRepository.save(createMember("pay1@spring.com", "1234567!"));
-    memberRepository.save(createMember("pay2@spring.com", "1234567!"));
+    Member member1 = Member.createMember("pay1@spring.com", passwordEncoder.encode("1234567!"),
+        "name", 100, Gender.MALE,
+        "address", "01012345678", LocalDateTime.now());
+    memberRepository.save(member1);
+
+    Member member2 = Member.createMember("pay2@spring.com", passwordEncoder.encode("1234567!"),
+        "name", 100, Gender.MALE,
+        "address", "01012345678", LocalDateTime.now());
+    memberRepository.save(member2);
   }
 
   @Test
@@ -52,27 +57,5 @@ public class SessionMVCTest {
     assertThat(sessionId1).isNotNull();
     assertThat(sessionId2).isNotNull();
     assertThat(sessionId1).isNotEqualTo(sessionId2);
-  }
-
-  private Member createMember(String email, String password) {
-    MemberJoinRequest request = MemberJoinRequest.builder()
-        .age(100)
-        .name("pay")
-        .gender(Gender.MALE)
-        .address("seoul")
-        .password(password)
-        .email(email)
-        .phoneNumber("01012345678")
-        .build();
-    String encoded = passwordEncoder.encode(password);
-    return createMember(request, encoded);
-  }
-
-  private Member createMember(MemberJoinRequest request, String encodedPassword) {
-    return Member.builder()
-        .email(request.getEmail()).password(encodedPassword).name(request.getName())
-        .age(request.getAge()).gender(request.getGender()).address(request.getAddress())
-        .phoneNumber(request.getPhoneNumber()).role(MemberRole.MEMBER)
-        .build();
   }
 }

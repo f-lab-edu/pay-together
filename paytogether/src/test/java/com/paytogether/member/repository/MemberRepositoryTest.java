@@ -23,16 +23,8 @@ class MemberRepositoryTest {
   @Test
   void findMemberByEmail() {
     //given
-    MemberJoinRequest request = MemberJoinRequest.builder()
-        .age(100)
-        .name("pay")
-        .gender(Gender.MALE)
-        .address("seoul")
-        .password("1234!678")
-        .email("pay@spring.com")
-        .phoneNumber("01012345678")
-        .build();
-    Member member = createMember(request, "encodedPassword");
+    Member member = Member.createMember("pay@spring.com", "123456!7", "name", 100, Gender.MALE,
+        "address", "01012345678", LocalDateTime.now());
     memberRepository.save(member);
 
     //when
