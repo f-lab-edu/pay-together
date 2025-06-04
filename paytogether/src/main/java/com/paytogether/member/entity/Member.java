@@ -23,27 +23,39 @@ public class Member {
   @Column(name = "member_id")
   private Long id;
 
+  @Column(nullable = false, unique = true, length = 50)
   private String email;
 
+  @Column(nullable = false, length = 255)
   private String password;
 
+  @Column(nullable = true)
   private String name;
 
+  @Column(nullable = true)
   private int age;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = true)
   private Gender gender;
 
+  @Column(nullable = false, length = 255)
   private String address;
 
+  @Column(nullable = false, length = 20)
   private String phoneNumber;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private MemberRole role;
 
+  @Column(nullable = false)
   private boolean isActive = true;
 
+  @Column(nullable = false)
   private LocalDateTime createdAt;
+
+  @Column(nullable = true)
   private LocalDateTime deactivatedAt;
 
   @Builder
