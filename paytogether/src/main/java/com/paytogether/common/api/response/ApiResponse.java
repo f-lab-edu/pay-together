@@ -9,6 +9,7 @@ public class ApiResponse<T> {
   private T body;
 
   private ApiResponse(int status, T body) {
+    this.status = status;
     this.body = body;
   }
 
