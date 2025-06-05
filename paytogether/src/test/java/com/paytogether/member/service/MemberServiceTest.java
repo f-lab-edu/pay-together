@@ -3,9 +3,8 @@ package com.paytogether.member.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.paytogether.member.entity.Gender;
-import com.paytogether.member.service.MemberJoinRequest;
-import com.paytogether.member.service.MemberJoinResponse;
-import com.paytogether.member.service.MemberService;
+import com.paytogether.member.service.command.MemberJoinCommand;
+import com.paytogether.member.service.result.MemberJoinResult;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ class MemberServiceTest {
 
   @Test
   void join_success() {
-    MemberJoinRequest request = MemberJoinRequest.builder()
+    MemberJoinCommand command = MemberJoinCommand.builder()
         .age(100)
         .name("pay")
         .gender(Gender.MALE)
@@ -33,9 +32,9 @@ class MemberServiceTest {
         .phoneNumber("01012345678")
         .build();
 
-    MemberJoinResponse result = memberService.join(request, LocalDateTime.now());
+    MemberJoinResult result = memberService.join(command, LocalDateTime.now());
 
-    assertThat(request.getEmail()).isEqualTo(result.getEmail());
+    assertThat(command.getEmail()).isEqualTo(result.getEmail());
   }
 
   @Test

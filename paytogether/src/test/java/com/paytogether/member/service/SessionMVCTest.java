@@ -2,6 +2,7 @@ package com.paytogether.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.paytogether.member.api.request.MemberLoginRequest;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
