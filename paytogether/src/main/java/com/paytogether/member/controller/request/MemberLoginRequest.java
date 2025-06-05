@@ -1,4 +1,4 @@
-package com.paytogether.member.api.request;
+package com.paytogether.member.controller.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

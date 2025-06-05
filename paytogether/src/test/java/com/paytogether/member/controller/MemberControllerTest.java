@@ -1,4 +1,4 @@
-package com.paytogether.member.api;
+package com.paytogether.member.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -12,11 +12,10 @@ import com.paytogether.config.TestSecurityConfig;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.entity.MemberRole;
-import com.paytogether.member.api.response.LoginResponse;
+import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.service.LoginService;
-import com.paytogether.member.api.request.MemberJoinRequest;
-import com.paytogether.member.api.response.MemberJoinResponse;
-import com.paytogether.member.api.request.MemberLoginRequest;
+import com.paytogether.member.controller.request.MemberJoinRequest;
+import com.paytogether.member.controller.request.MemberLoginRequest;
 import com.paytogether.member.service.MemberService;
 import com.paytogether.member.service.command.MemberJoinCommand;
 import com.paytogether.member.service.result.MemberJoinResult;

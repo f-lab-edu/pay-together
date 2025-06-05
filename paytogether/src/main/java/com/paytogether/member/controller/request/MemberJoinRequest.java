@@ -1,4 +1,4 @@
-package com.paytogether.member.api.request;
+package com.paytogether.member.controller.request;
 
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.service.command.MemberJoinCommand;

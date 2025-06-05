@@ -1,4 +1,4 @@
-package com.paytogether.member.api.response;
+package com.paytogether.member.controller.response;
 
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.service.result.MemberJoinResult;

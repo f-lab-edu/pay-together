@@ -1,11 +1,11 @@
-package com.paytogether.member.api;
+package com.paytogether.member.controller;
 
 import com.paytogether.common.api.response.ApiResponse;
-import com.paytogether.member.api.response.LoginResponse;
+import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.service.LoginService;
-import com.paytogether.member.api.request.MemberJoinRequest;
-import com.paytogether.member.api.response.MemberJoinResponse;
-import com.paytogether.member.api.request.MemberLoginRequest;
+import com.paytogether.member.controller.request.MemberJoinRequest;
+import com.paytogether.member.controller.response.MemberJoinResponse;
+import com.paytogether.member.controller.request.MemberLoginRequest;
 import com.paytogether.member.service.result.MemberJoinResult;
 import com.paytogether.member.service.MemberService;
 import jakarta.validation.Valid;

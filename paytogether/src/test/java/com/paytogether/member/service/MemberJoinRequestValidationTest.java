@@ -2,7 +2,7 @@ package com.paytogether.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.paytogether.member.api.request.MemberJoinRequest;
+import com.paytogether.member.controller.request.MemberJoinRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

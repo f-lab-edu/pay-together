@@ -2,7 +2,7 @@ package com.paytogether.member.service;
 
 import com.paytogether.exception.PayTogetherErrors;
 import com.paytogether.exception.PayTogetherException;
-import com.paytogether.member.api.response.LoginResponse;
+import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpSession;
