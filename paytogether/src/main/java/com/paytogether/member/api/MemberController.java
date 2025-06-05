@@ -6,7 +6,7 @@ import com.paytogether.member.service.LoginService;
 import com.paytogether.member.api.request.MemberJoinRequest;
 import com.paytogether.member.api.response.MemberJoinResponse;
 import com.paytogether.member.api.request.MemberLoginRequest;
-import com.paytogether.member.service.result.MemberLoginResult;
+import com.paytogether.member.service.result.MemberJoinResult;
 import com.paytogether.member.service.MemberService;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
@@ -27,7 +27,7 @@ public class MemberController {
   @PostMapping("/member/join")
   public ApiResponse<MemberJoinResponse> join(@RequestBody @Valid MemberJoinRequest request) {
     LocalDateTime now = LocalDateTime.now();
-    MemberLoginResult result = memberService.join(MemberJoinRequest.toMemberLoginCommand(request), now);
+    MemberJoinResult result = memberService.join(MemberJoinRequest.toMemberLoginCommand(request), now);
     return ApiResponse.createResponse(HttpStatus.OK.value(), MemberJoinResponse.fromMemberLoginResult(result));
   }
 

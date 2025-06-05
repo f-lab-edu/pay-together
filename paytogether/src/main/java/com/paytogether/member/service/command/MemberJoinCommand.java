@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberLoginCommand {
+public class MemberJoinCommand {
 
   private String email;
 

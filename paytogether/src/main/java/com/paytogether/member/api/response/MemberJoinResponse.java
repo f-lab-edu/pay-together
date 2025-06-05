@@ -1,7 +1,7 @@
 package com.paytogether.member.api.response;
 
 import com.paytogether.member.entity.Member;
-import com.paytogether.member.service.result.MemberLoginResult;
+import com.paytogether.member.service.result.MemberJoinResult;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,7 @@ public class MemberJoinResponse {
     return new MemberJoinResponse(member.getEmail());
   }
 
-  public static MemberJoinResponse fromMemberLoginResult(MemberLoginResult result) {
+  public static MemberJoinResponse fromMemberLoginResult(MemberJoinResult result) {
     return MemberJoinResponse.builder()
         .email(result.getEmail())
         .build();

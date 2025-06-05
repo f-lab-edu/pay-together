@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberLoginResult {
+public class MemberJoinResult {
 
   private String email;
 
-  public static MemberLoginResult fromMember(Member member) {
-    return MemberLoginResult.builder()
+  public static MemberJoinResult fromMember(Member member) {
+    return MemberJoinResult.builder()
         .email(member.getEmail())
         .build();
   }
