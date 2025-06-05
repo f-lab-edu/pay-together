@@ -1,11 +1,12 @@
 package com.paytogether.member.api;
 
 import com.paytogether.common.api.response.ApiResponse;
-import com.paytogether.member.service.LoginResponse;
+import com.paytogether.member.api.response.LoginResponse;
 import com.paytogether.member.service.LoginService;
-import com.paytogether.member.service.MemberJoinRequest;
-import com.paytogether.member.service.MemberJoinResponse;
-import com.paytogether.member.service.MemberLoginRequest;
+import com.paytogether.member.api.request.MemberJoinRequest;
+import com.paytogether.member.api.response.MemberJoinResponse;
+import com.paytogether.member.api.request.MemberLoginRequest;
+import com.paytogether.member.service.result.MemberLoginResult;
 import com.paytogether.member.service.MemberService;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
@@ -26,14 +27,13 @@ public class MemberController {
   @PostMapping("/member/join")
   public ApiResponse<MemberJoinResponse> join(@RequestBody @Valid MemberJoinRequest request) {
     LocalDateTime now = LocalDateTime.now();
-    return ApiResponse.createResponse(HttpStatus.OK.value(), memberService.join(request, now));
+    MemberLoginResult result = memberService.join(MemberJoinRequest.toMemberLoginCommand(request), now);
+    return ApiResponse.createResponse(HttpStatus.OK.value(), MemberJoinResponse.fromMemberLoginResult(result));
   }
 
   @PostMapping("/member/login")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid MemberLoginRequest request) {
-    return ApiResponse.createResponse(
-        HttpStatus.OK.value(),
-        loginService.login(request.getEmail(), request.getPassword()));
+    return ApiResponse.createResponse(HttpStatus.OK.value(), loginService.login(request.getEmail(), request.getPassword()));
   }
 
   @PostMapping("/member/logout")

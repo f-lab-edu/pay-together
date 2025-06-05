@@ -1,6 +1,7 @@
-package com.paytogether.member.service;
+package com.paytogether.member.api.request;
 
 import com.paytogether.member.entity.Gender;
+import com.paytogether.member.service.command.MemberLoginCommand;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -47,5 +48,17 @@ public class MemberJoinRequest {
     this.name = name;
     this.age = age;
     this.gender = gender;
+  }
+
+  public static MemberLoginCommand toMemberLoginCommand(MemberJoinRequest request) {
+    return MemberLoginCommand.builder()
+        .email(request.getEmail())
+        .password(request.getPassword())
+        .address(request.getAddress())
+        .phoneNumber(request.getPhoneNumber())
+        .name(request.getName())
+        .age(request.getAge())
+        .gender(request.getGender())
+        .build();
   }
 }

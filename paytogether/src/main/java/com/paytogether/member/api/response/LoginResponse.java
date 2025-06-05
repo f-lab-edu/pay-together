@@ -1,4 +1,4 @@
-package com.paytogether.member.service;
+package com.paytogether.member.api.response;
 
 import lombok.Getter;
 
