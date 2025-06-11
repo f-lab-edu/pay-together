@@ -9,14 +9,13 @@ import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.DirtiesContext;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
 class SessionLoginServiceTest {
 
@@ -28,6 +27,11 @@ class SessionLoginServiceTest {
   private MemberRepository memberRepository;
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @BeforeEach
+  void beforeEach() {
+    memberRepository.deleteAll();
+  }
 
   @DisplayName("사용자가 로그인 시도를 성공하면 세션에 있는 사용자의 고유 id와 일치해야 한다")
   @Test
@@ -53,7 +57,7 @@ class SessionLoginServiceTest {
   void login_fail_byEmailExistsFalse() {
     //given
     String password = "1234!678";
-    String email = "pay1@spring.com";
+    String email = "pay@spring.com";
     String wrongEmail = "pa@spring.com";
     Member member = Member.createMember(email, password, "name", 100, Gender.MALE,
         "address", "01012345678", LocalDateTime.now());
@@ -69,7 +73,7 @@ class SessionLoginServiceTest {
     //given
     String password = "1234!678";
     String wrongPassword = "!2345678";
-    String email = "pay@spring.com";
+    String email = "pay3@spring.com";
     Member member = Member.createMember(email, passwordEncoder.encode(password), "name", 100,
         Gender.MALE,
         "address", "01012345678", LocalDateTime.now());
@@ -84,7 +88,7 @@ class SessionLoginServiceTest {
   void logout_success() {
     //given
     String password = "1234!678";
-    String email = "pay@spring.com";
+    String email = "pay4@spring.com";
     Member member = Member.createMember(email, passwordEncoder.encode(password), "name", 100,
         Gender.MALE,
         "address", "01012345678", LocalDateTime.now());

@@ -2,10 +2,10 @@ package com.paytogether.member.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.paytogether.member.controller.request.MemberJoinRequest;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.entity.MemberRole;
-import com.paytogether.member.controller.request.MemberJoinRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.assertj.core.api.SoftAssertions;
