@@ -9,13 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytogether.config.TestSecurityConfig;
+import com.paytogether.member.controller.request.MemberJoinRequest;
+import com.paytogether.member.controller.request.MemberLoginRequest;
+import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.entity.MemberRole;
-import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.service.LoginService;
-import com.paytogether.member.controller.request.MemberJoinRequest;
-import com.paytogether.member.controller.request.MemberLoginRequest;
 import com.paytogether.member.service.MemberService;
 import com.paytogether.member.service.command.MemberJoinCommand;
 import com.paytogether.member.service.result.MemberJoinResult;
@@ -24,10 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-@ActiveProfiles("test")
+
 @Import(TestSecurityConfig.class)
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
