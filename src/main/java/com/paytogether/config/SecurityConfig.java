@@ -24,7 +24,7 @@ public class SecurityConfig {
         .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(PathRequest.toH2Console()).permitAll()
+            //.requestMatchers(PathRequest.toH2Console()).permitAll()
             .requestMatchers("/member/**").permitAll()
             .anyRequest().authenticated()
         );
