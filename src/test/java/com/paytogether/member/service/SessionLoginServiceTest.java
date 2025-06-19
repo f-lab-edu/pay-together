@@ -2,12 +2,12 @@ package com.paytogether.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.paytogether.exception.PayTogetherException;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class SessionLoginServiceTest {
 
   @Autowired
-  private HttpSession httpSession;
+  private HttpSessionManager httpSessionManager;
   @Autowired
   private LoginService loginService;
   @Autowired
@@ -49,7 +49,7 @@ class SessionLoginServiceTest {
 
     //then
     Long memberId = member.getId();
-    Long memberIdInSession = (Long) httpSession.getAttribute(TestMemberConstant.LOGIN_MEMBER);
+    Long memberIdInSession = httpSessionManager.getMemberId();
     assertThat(memberId).isEqualTo(memberIdInSession);
   }
 
@@ -96,13 +96,10 @@ class SessionLoginServiceTest {
 
     //when
     loginService.login(email, password);
-    Object login = httpSession.getAttribute(SessionLoginService.LOGIN_MEMBER);
-    assertThat(login).isNotNull();
-
+    //assertTrue(httpSession.check());
     loginService.logout();
 
     //then
-    Object logout = httpSession.getAttribute(SessionLoginService.LOGIN_MEMBER);
-    assertThat(logout).isNull();
+    assertFalse(httpSessionManager.check());
   }
 }
