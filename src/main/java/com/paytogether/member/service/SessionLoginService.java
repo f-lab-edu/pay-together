@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionLoginService implements LoginService {
 
-  public static final String LOGIN_MEMBER = "LOGIN_MEMBER";
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
+  private final HttpSessionManager httpSessionManager;
   private final HttpSession httpSession;
 
   @Override
@@ -37,23 +37,22 @@ public class SessionLoginService implements LoginService {
 
     boolean duplicateLogin = false;
     if (sessionExists()) {
-      httpSession.invalidate();
+      httpSessionManager.invalidate();
       duplicateLogin = true;
     }
 
-    httpSession.setAttribute(LOGIN_MEMBER, presentMember.getId());
+    httpSessionManager.create(presentMember.getId());
     log.info("Session ID = {}, Member ID = {}", httpSession.getId(), presentMember.getId());
     return LoginResponse.of(presentMember.getEmail(), duplicateLogin);
   }
 
   @Override
   public void logout() {
-    httpSession.invalidate();
+    httpSessionManager.invalidate();
   }
 
   @Override
   public boolean sessionExists() {
-    Object loginMemberId = httpSession.getAttribute(LOGIN_MEMBER);
-    return Optional.ofNullable(loginMemberId).isPresent();
+    return httpSessionManager.check();
   }
 }
