@@ -20,7 +20,6 @@ public class SessionLoginService implements LoginService {
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
   private final HttpSessionManager httpSessionManager;
-  private final HttpSession httpSession;
 
   @Override
   public LoginResponse login(String email, String rawPassword) {
