@@ -5,7 +5,6 @@ import com.paytogether.exception.PayTogetherException;
 import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +40,6 @@ public class SessionLoginService implements LoginService {
     }
 
     httpSessionManager.create(presentMember.getId());
-    log.info("Session ID = {}, Member ID = {}", httpSession.getId(), presentMember.getId());
     return LoginResponse.of(presentMember.getEmail(), duplicateLogin);
   }
 
