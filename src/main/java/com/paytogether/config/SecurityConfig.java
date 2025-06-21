@@ -25,7 +25,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             //.requestMatchers(PathRequest.toH2Console()).permitAll()
-            .requestMatchers("/member/**").permitAll()
+            .requestMatchers("/member/**", "/cart/**").permitAll()
             .anyRequest().authenticated()
         );
     return http.build();
