@@ -5,7 +5,6 @@ import com.paytogether.exception.PayTogetherException;
 import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionLoginService implements LoginService {
 
-  public static final String LOGIN_MEMBER = "LOGIN_MEMBER";
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
-  private final HttpSession httpSession;
+  private final HttpSessionManager httpSessionManager;
 
   @Override
   public LoginResponse login(String email, String rawPassword) {
@@ -37,23 +35,21 @@ public class SessionLoginService implements LoginService {
 
     boolean duplicateLogin = false;
     if (sessionExists()) {
-      httpSession.invalidate();
+      httpSessionManager.invalidate();
       duplicateLogin = true;
     }
 
-    httpSession.setAttribute(LOGIN_MEMBER, presentMember.getId());
-    log.info("Session ID = {}, Member ID = {}", httpSession.getId(), presentMember.getId());
+    httpSessionManager.create(presentMember.getId());
     return LoginResponse.of(presentMember.getEmail(), duplicateLogin);
   }
 
   @Override
   public void logout() {
-    httpSession.invalidate();
+    httpSessionManager.invalidate();
   }
 
   @Override
   public boolean sessionExists() {
-    Object loginMemberId = httpSession.getAttribute(LOGIN_MEMBER);
-    return Optional.ofNullable(loginMemberId).isPresent();
+    return httpSessionManager.check();
   }
 }
