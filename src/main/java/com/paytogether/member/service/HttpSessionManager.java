@@ -8,22 +8,25 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class HttpSessionManager {
-  private static final String LOGIN_MEMBER = "LOGIN_MEMBER";
   private final HttpSession httpSession;
-
-  public void create(Long memberId) {
-    httpSession.setAttribute(LOGIN_MEMBER, memberId);
-  }
 
   public void invalidate() {
     httpSession.invalidate();
   }
 
-  public Long getMemberId() {
-    return (Long) httpSession.getAttribute(LOGIN_MEMBER);
+  public Long getMemberId(String key) {
+    return (Long) httpSession.getAttribute(key);
   }
 
-  public boolean check() {
-    return Optional.ofNullable(httpSession.getAttribute(LOGIN_MEMBER)).isPresent();
+  public boolean check(String key) {
+    return Optional.ofNullable(httpSession.getAttribute(key)).isPresent();
+  }
+
+  public void set(String key, Object obj) {
+    httpSession.setAttribute(key, obj);
+  }
+
+  public Object get(String key) {
+    return httpSession.getAttribute(key);
   }
 }
