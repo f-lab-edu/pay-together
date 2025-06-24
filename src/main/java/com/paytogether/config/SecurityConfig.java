@@ -19,7 +19,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            .sessionCreationPolicy(SessionCreationPolicy.NEVER)
         )
         .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
         .csrf(csrf -> csrf.disable())
