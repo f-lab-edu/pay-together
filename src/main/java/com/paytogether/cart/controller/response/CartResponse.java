@@ -1,19 +1,19 @@
 package com.paytogether.cart.controller.response;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.paytogether.cart.service.CartDto;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
 public class CartResponse {
 
-  private Map<String, String> cart;
+  private List<CartDto> cart;
 
-  private CartResponse(Map<String, String> cart) {
+  private CartResponse(List<CartDto> cart) {
     this.cart = cart;
   }
 
-  public static CartResponse of(Map<String, String> cart) {
+  public static CartResponse of(List<CartDto> cart) {
     return new CartResponse(cart);
   }
 }
