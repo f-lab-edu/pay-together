@@ -49,7 +49,7 @@ class SessionLoginServiceTest {
 
     //then
     Long memberId = member.getId();
-    Long memberIdInSession = httpSessionManager.getMemberId();
+    Long memberIdInSession = httpSessionManager.getMemberId(TestMemberConstant.LOGIN_MEMBER);
     assertThat(memberId).isEqualTo(memberIdInSession);
   }
 
@@ -100,6 +100,6 @@ class SessionLoginServiceTest {
     loginService.logout();
 
     //then
-    assertFalse(httpSessionManager.check());
+    assertFalse(httpSessionManager.check(TestMemberConstant.LOGIN_MEMBER));
   }
 }

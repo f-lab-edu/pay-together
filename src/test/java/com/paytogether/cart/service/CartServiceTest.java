@@ -7,7 +7,7 @@ import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,17 +31,17 @@ class CartServiceTest {
   private Long memberId;
 
   @BeforeEach
-  void delete() {
+  void before() {
     Member member = Member.createMember("pay@Spring.com", passwordEncoder.encode("password!"),
         "name", 100,
         Gender.MALE, "address", "01012345678", LocalDateTime.now());
     Member save = memberRepository.save(member);
     memberId = save.getId();
-    cartService.clearCart(memberId);
   }
 
   @AfterEach
   void after() {
+    cartService.clearCart(memberId);
     memberRepository.deleteAll();
   }
 
@@ -50,20 +50,21 @@ class CartServiceTest {
   void addProductToCart() {
     // given
     // when
-    CartResult cartResult = cartService.addProductToCart(memberId, 2L, 10);
-    Map<String, String> cart = cartResult.getCart();
+    CartResult cartResult = cartService.addNewProduct(memberId, 2L, 10);
+    List<CartDto> cart = cartResult.getCart();
     // then
-    assertThat(cart.get("2")).isEqualTo("10");
+    assertThat(cart.get(0).getQuantity()).isEqualTo(10);
   }
 
   @DisplayName("장바구니에 담긴 상품을 하나 삭제하면 하나만 삭제된다")
   @Test
   void deleteProduct() {
     // given
-    cartService.addProductToCart(memberId, 2L, 10);
+    cartService.addNewProduct(memberId, 2L, 10);
     // when
     CartResult cartResult = cartService.deleteProduct(memberId, 2L);
     // then
+    System.out.println(cartResult.getCart());
     assertThat(cartResult.getCart()).hasSize(0);
   }
 
@@ -71,10 +72,10 @@ class CartServiceTest {
   @Test
   void clearCart() {
     // given
-    cartService.addProductToCart(memberId, 2L, 10);
-    cartService.addProductToCart(memberId, 3L, 10);
+    cartService.addNewProduct(memberId, 2L, 10);
+    cartService.addNewProduct(memberId, 3L, 10);
     // when
-    CartResult cartResult = cartService.clearCart(1L);
+    CartResult cartResult = cartService.clearCart(memberId);
     // then
     assertThat(cartResult.getCart()).hasSize(0);
   }
