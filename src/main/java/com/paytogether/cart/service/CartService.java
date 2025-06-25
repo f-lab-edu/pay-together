@@ -1,11 +1,7 @@
 package com.paytogether.cart.service;
 
+import com.paytogether.cart.repository.CartRepository;
 import com.paytogether.cart.service.result.CartResult;
-import com.paytogether.exception.PayTogetherErrors;
-import com.paytogether.exception.PayTogetherException;
-import com.paytogether.member.repository.MemberRepository;
-import com.paytogether.member.service.HttpSessionManager;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -17,71 +13,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class CartService {
 
-  private static final String REDIS_CART_KEY = "CART";
-  private final MemberRepository memberRepository;
-  private final HttpSessionManager httpSessionManager;
+  private final CartRepository cartRepository;
 
-  public CartResult addNewProduct(Long memberId, Long productId, int quantity) {
-    validateMemberId(memberId);
-
+  public CartResult saveProduct(Long productId, int quantity) {
+    Map<String, CartProductDto> cart = cartRepository.findCart();
     String key = productId.toString();
-    Map<String, CartProductDto> cart = getCartInSession();
-    if (cart == null) {
-      cart = new HashMap<>();
-    }
-    if (cart.containsKey(key)) {
-      throw new PayTogetherException(PayTogetherErrors.INVALID_INFO);
-    }
-    cart.put(key, CartProductDto.create(productId, quantity));
-    httpSessionManager.set(REDIS_CART_KEY, cart);
+
+    CartProductDto cartProductDto = CartProductDto.create(productId, quantity);
+    cart.put(key, cartProductDto);
+    cartRepository.saveCart(cart);
+
     return CartResult.of(convertKeyStringToLong(cart));
   }
 
-  public CartResult adjustProduct(Long memberId, Long productId, int quantity) {
-    validateMemberId(memberId);
-
-    String key = productId.toString();
-    Map<String, CartProductDto> cart = getCartInSession();
-    if (!cart.containsKey(key)) {
-      throw new PayTogetherException(PayTogetherErrors.INVALID_INFO);
-    }
-    cart.put(key, CartProductDto.create(productId, quantity));
-    httpSessionManager.set(REDIS_CART_KEY, cart);
+  public CartResult findCart() {
+    Map<String, CartProductDto> cart = cartRepository.findCart();
     return CartResult.of(convertKeyStringToLong(cart));
   }
 
-  public CartResult getCart(Long memberId) {
-    validateMemberId(memberId);
-
-    Map<String, CartProductDto> cart = getCartInSession();
+  public CartResult deleteProduct(Long productId) {
+    Map<String, CartProductDto> cart = cartRepository.findCart();
+    cartRepository.removeProduct(cart, productId.toString());
     return CartResult.of(convertKeyStringToLong(cart));
   }
 
-  public CartResult deleteProduct(Long memberId, Long productId) {
-    validateMemberId(memberId);
-
-    Map<String, CartProductDto> cart = getCartInSession();
-    cart.remove(productId.toString());
-    httpSessionManager.set(REDIS_CART_KEY, cart);
+  public CartResult clearCart() {
+    Map<String, CartProductDto> cart = cartRepository.findCart();
+    cartRepository.clearCart(cart);
     return CartResult.of(convertKeyStringToLong(cart));
-  }
-
-  public CartResult clearCart(Long memberId) {
-    validateMemberId(memberId);
-
-    Map<String, CartProductDto> cart = getCartInSession();
-    cart.clear();
-    httpSessionManager.set(REDIS_CART_KEY, cart);
-    return CartResult.of(convertKeyStringToLong(cart));
-  }
-
-  private Map<String, CartProductDto> getCartInSession() {
-    return (Map<String, CartProductDto>) httpSessionManager.get(REDIS_CART_KEY);
-  }
-
-  public void validateMemberId(Long memberId) {
-    memberRepository.findById(memberId)
-        .orElseThrow(() -> new PayTogetherException(PayTogetherErrors.MEMBER_NOT_FOUND));
   }
 
   public Map<Long, CartProductDto> convertKeyStringToLong(Map<String, CartProductDto> stringKey) {
