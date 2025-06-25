@@ -24,7 +24,7 @@ public class CartController {
   private final CartService cartService;
 
   @PostMapping
-  public ApiResponse<CartResponse> addNewProduct(@RequestBody AddCartProductRequest request) {
+  public ApiResponse<CartResponse> saveProduct(@RequestBody AddCartProductRequest request) {
     CartResult cartResult = cartService.saveProduct(request.productId(),
         request.quantity());
     return ApiResponse.createResponse(HttpStatus.OK.value(),
@@ -39,14 +39,14 @@ public class CartController {
   }
 
   @DeleteMapping("/products/{productId}")
-  public ApiResponse<CartResponse> deleteProduct(@PathVariable Long productId) {
+  public ApiResponse<CartResponse> removeProduct(@PathVariable Long productId) {
     CartResult cartResult = cartService.deleteProduct(productId);
     return ApiResponse.createResponse(HttpStatus.OK.value(),
         CartResponse.of(cartResult.getCartProductDtoList()));
   }
 
   @GetMapping
-  public ApiResponse<CartResponse> getCart() {
+  public ApiResponse<CartResponse> findCart() {
     CartResult cartResult = cartService.findCart();
     return ApiResponse.createResponse(HttpStatus.OK.value(),
         CartResponse.of(cartResult.getCartProductDtoList()));
