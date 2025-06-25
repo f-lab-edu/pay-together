@@ -1,5 +1,5 @@
 ### 상품 추가 @env=local
-POST localhost:8080/members/{{memberId}}/cart
+POST localhost:8080/members/{{memberId}}/carts
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### 상품 수량 조정 @env=local
-PATCH localhost:8080/members/{{memberId}}/cart
+PATCH localhost:8080/members/{{memberId}}/carts
 Content-Type: application/json
 
 {
@@ -17,10 +17,10 @@ Content-Type: application/json
 }
 
 ### 장바구니 조회 @env=local
-GET localhost:8080/members/{{memberId}}/cart
+GET localhost:8080/members/{{memberId}}/carts
 
 ### 상품 개별 삭제 @env=local
-DELETE localhost:8080/members/{{memberId}}/cart/products/{{productId}}
+DELETE localhost:8080/members/{{memberId}}/carts/products/{{productId}}
 
 ### 장바구니 전체 비우기 @env=local
-PUT localhost:8080/members/{{memberId}}/cart
+PUT localhost:8080/members/{{memberId}}/carts
