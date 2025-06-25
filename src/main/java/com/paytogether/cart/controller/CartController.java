@@ -30,7 +30,7 @@ public class CartController {
       @RequestBody AddCartProductRequest request) {
     CartResult cartResult = cartService.addNewProduct(memberId, request.productId(),
         request.quantity());
-    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
+    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCartProductDtoList()));
   }
 
   @PatchMapping
@@ -38,25 +38,25 @@ public class CartController {
       @RequestBody AdjustCartProductRequest request) {
     CartResult cartResult = cartService.adjustProduct(memberId, request.productId(),
         request.quantity());
-    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
+    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCartProductDtoList()));
   }
 
   @PutMapping
   public ApiResponse<CartResponse> clearCart(@PathVariable Long memberId) {
     CartResult cartResult = cartService.clearCart(memberId);
-    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
+    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCartProductDtoList()));
   }
 
   @DeleteMapping("/products/{productId}")
   public ApiResponse<CartResponse> deleteProduct(@PathVariable Long memberId,
       @PathVariable Long productId) {
     CartResult cartResult = cartService.deleteProduct(memberId, productId);
-    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
+    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCartProductDtoList()));
   }
 
   @GetMapping
   public ApiResponse<CartResponse> getCart(@PathVariable Long memberId) {
     CartResult cartResult = cartService.getCart(memberId);
-    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
+    return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCartProductDtoList()));
   }
 }

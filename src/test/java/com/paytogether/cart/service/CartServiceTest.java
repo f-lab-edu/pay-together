@@ -51,7 +51,7 @@ class CartServiceTest {
     // given
     // when
     CartResult cartResult = cartService.addNewProduct(memberId, 2L, 10);
-    List<CartDto> cart = cartResult.getCart();
+    List<CartProductDto> cart = cartResult.getCartProductDtoList();
     // then
     assertThat(cart.get(0).getQuantity()).isEqualTo(10);
   }
@@ -64,8 +64,8 @@ class CartServiceTest {
     // when
     CartResult cartResult = cartService.deleteProduct(memberId, 2L);
     // then
-    System.out.println(cartResult.getCart());
-    assertThat(cartResult.getCart()).hasSize(0);
+    System.out.println(cartResult.getCartProductDtoList());
+    assertThat(cartResult.getCartProductDtoList()).hasSize(0);
   }
 
   @DisplayName("클리어하면 회원의 장바구니에 담긴 상품들이 전부 삭제된다")
@@ -77,6 +77,6 @@ class CartServiceTest {
     // when
     CartResult cartResult = cartService.clearCart(memberId);
     // then
-    assertThat(cartResult.getCart()).hasSize(0);
+    assertThat(cartResult.getCartProductDtoList()).hasSize(0);
   }
 }
