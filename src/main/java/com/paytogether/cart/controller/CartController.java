@@ -1,6 +1,7 @@
 package com.paytogether.cart.controller;
 
-import com.paytogether.cart.controller.request.ProductRequest;
+import com.paytogether.cart.controller.request.AddCartProductRequest;
+import com.paytogether.cart.controller.request.AdjustCartProductRequest;
 import com.paytogether.cart.controller.response.CartResponse;
 import com.paytogether.cart.service.CartService;
 import com.paytogether.cart.service.result.CartResult;
@@ -26,17 +27,17 @@ public class CartController {
 
   @PostMapping
   public ApiResponse<CartResponse> addNewProduct(@PathVariable Long memberId,
-      @RequestBody ProductRequest request) {
-    CartResult cartResult = cartService.addNewProduct(memberId, request.getProductId(),
-        request.getQuantity());
+      @RequestBody AddCartProductRequest request) {
+    CartResult cartResult = cartService.addNewProduct(memberId, request.productId(),
+        request.quantity());
     return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
   }
 
   @PatchMapping
   public ApiResponse<CartResponse> adjustProduct(@PathVariable Long memberId,
-      @RequestBody ProductRequest request) {
-    CartResult cartResult = cartService.adjustProduct(memberId, request.getProductId(),
-        request.getQuantity());
+      @RequestBody AdjustCartProductRequest request) {
+    CartResult cartResult = cartService.adjustProduct(memberId, request.productId(),
+        request.quantity());
     return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
   }
 
