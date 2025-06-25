@@ -14,29 +14,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/members")
 public class MemberController {
 
   private final MemberService memberService;
 
   private final LoginService loginService;
 
-  @PostMapping("/member/join")
+  @PostMapping("/join")
   public ApiResponse<MemberJoinResponse> join(@RequestBody @Valid MemberJoinRequest request) {
     LocalDateTime now = LocalDateTime.now();
     MemberJoinResult result = memberService.join(MemberJoinRequest.toMemberLoginCommand(request), now);
     return ApiResponse.createResponse(HttpStatus.OK.value(), MemberJoinResponse.fromMemberLoginResult(result));
   }
 
-  @PostMapping("/member/login")
+  @PostMapping("/login")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid MemberLoginRequest request) {
     return ApiResponse.createResponse(HttpStatus.OK.value(), loginService.login(request.getEmail(), request.getPassword()));
   }
 
-  @PostMapping("/member/logout")
+  @PostMapping("/logout")
   public ApiResponse<?> logout() {
     loginService.logout();
     return ApiResponse.createResponse(HttpStatus.OK.value(), null);

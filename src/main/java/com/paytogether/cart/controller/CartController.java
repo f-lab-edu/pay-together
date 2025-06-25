@@ -12,16 +12,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/members/{memberId}/carts")
 public class CartController {
 
   private final CartService cartService;
 
-  @PostMapping("/cart/add/{memberId}")
+  @PostMapping
   public ApiResponse<CartResponse> addNewProduct(@PathVariable Long memberId,
       @RequestBody ProductRequest request) {
     CartResult cartResult = cartService.addNewProduct(memberId, request.getProductId(),
@@ -29,7 +32,7 @@ public class CartController {
     return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
   }
 
-  @PatchMapping("/cart/adjust/{memberId}")
+  @PatchMapping
   public ApiResponse<CartResponse> adjustProduct(@PathVariable Long memberId,
       @RequestBody ProductRequest request) {
     CartResult cartResult = cartService.adjustProduct(memberId, request.getProductId(),
@@ -37,20 +40,20 @@ public class CartController {
     return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
   }
 
-  @DeleteMapping("/cart/clear/{memberId}")
+  @PutMapping
   public ApiResponse<CartResponse> clearCart(@PathVariable Long memberId) {
     CartResult cartResult = cartService.clearCart(memberId);
     return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
   }
 
-  @DeleteMapping("/cart/delete/{memberId}/{productId}")
+  @DeleteMapping("/products/{productId}")
   public ApiResponse<CartResponse> deleteProduct(@PathVariable Long memberId,
       @PathVariable Long productId) {
     CartResult cartResult = cartService.deleteProduct(memberId, productId);
     return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
   }
 
-  @GetMapping("/cart/{memberId}")
+  @GetMapping
   public ApiResponse<CartResponse> getCart(@PathVariable Long memberId) {
     CartResult cartResult = cartService.getCart(memberId);
     return ApiResponse.createResponse(HttpStatus.OK.value(), CartResponse.of(cartResult.getCart()));
