@@ -3,18 +3,13 @@ package com.paytogether.cart.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.paytogether.cart.service.result.CartResult;
-import com.paytogether.member.entity.Gender;
-import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 class CartServiceTest {
@@ -25,23 +20,9 @@ class CartServiceTest {
   @Autowired
   private MemberRepository memberRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  private Long memberId;
-
-  @BeforeEach
-  void before() {
-    Member member = Member.createMember("pay@Spring.com", passwordEncoder.encode("password!"),
-        "name", 100,
-        Gender.MALE, "address", "01012345678", LocalDateTime.now());
-    Member save = memberRepository.save(member);
-    memberId = save.getId();
-  }
-
   @AfterEach
   void after() {
-    cartService.clearCart(memberId);
+    cartService.clearCart();
     memberRepository.deleteAll();
   }
 
@@ -50,7 +31,7 @@ class CartServiceTest {
   void addProductToCart() {
     // given
     // when
-    CartResult cartResult = cartService.addNewProduct(memberId, 2L, 10);
+    CartResult cartResult = cartService.saveProduct(2L, 10);
     List<CartProductDto> cart = cartResult.getCartProductDtoList();
     // then
     assertThat(cart.get(0).getQuantity()).isEqualTo(10);
@@ -60,9 +41,9 @@ class CartServiceTest {
   @Test
   void deleteProduct() {
     // given
-    cartService.addNewProduct(memberId, 2L, 10);
+    cartService.saveProduct(2L, 10);
     // when
-    CartResult cartResult = cartService.deleteProduct(memberId, 2L);
+    CartResult cartResult = cartService.deleteProduct(2L);
     // then
     System.out.println(cartResult.getCartProductDtoList());
     assertThat(cartResult.getCartProductDtoList()).hasSize(0);
@@ -72,10 +53,10 @@ class CartServiceTest {
   @Test
   void clearCart() {
     // given
-    cartService.addNewProduct(memberId, 2L, 10);
-    cartService.addNewProduct(memberId, 3L, 10);
+    cartService.saveProduct(2L, 10);
+    cartService.saveProduct(3L, 10);
     // when
-    CartResult cartResult = cartService.clearCart(memberId);
+    CartResult cartResult = cartService.clearCart();
     // then
     assertThat(cartResult.getCartProductDtoList()).hasSize(0);
   }
