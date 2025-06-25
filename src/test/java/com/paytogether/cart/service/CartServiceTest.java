@@ -43,7 +43,7 @@ class CartServiceTest {
     // given
     cartService.saveProduct(2L, 10);
     // when
-    CartResult cartResult = cartService.deleteProduct(2L);
+    CartResult cartResult = cartService.removeProduct(2L);
     // then
     System.out.println(cartResult.getCartProductDtoList());
     assertThat(cartResult.getCartProductDtoList()).hasSize(0);

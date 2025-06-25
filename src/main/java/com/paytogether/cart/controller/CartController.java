@@ -40,7 +40,7 @@ public class CartController {
 
   @DeleteMapping("/products/{productId}")
   public ApiResponse<CartResponse> removeProduct(@PathVariable Long productId) {
-    CartResult cartResult = cartService.deleteProduct(productId);
+    CartResult cartResult = cartService.removeProduct(productId);
     return ApiResponse.createResponse(HttpStatus.OK.value(),
         CartResponse.of(cartResult.getCartProductDtoList()));
   }

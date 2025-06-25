@@ -31,7 +31,7 @@ public class CartService {
     return CartResult.of(convertKeyStringToLong(cart));
   }
 
-  public CartResult deleteProduct(Long productId) {
+  public CartResult removeProduct(Long productId) {
     Map<String, CartProductDto> cart = cartRepository.findCart();
     cartRepository.removeProduct(cart, productId.toString());
     return CartResult.of(convertKeyStringToLong(cart));
