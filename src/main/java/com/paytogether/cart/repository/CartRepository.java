@@ -29,7 +29,7 @@ public class CartRepository {
   }
 
   public Map<String, CartProductDto> findCart() {
-    Map<String, CartProductDto> cart = (Map<String, CartProductDto>) httpSessionManager.get(REDIS_CART_KEY);
+    Map<String, CartProductDto> cart = httpSessionManager.get(REDIS_CART_KEY, Map.class);
     return cart != null ? cart : new HashMap<>();
   }
 }
