@@ -8,14 +8,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class HttpSessionManager {
+
   private final HttpSession httpSession;
 
   public void invalidate() {
     httpSession.invalidate();
-  }
-
-  public Long getMemberId(String key) {
-    return (Long) httpSession.getAttribute(key);
   }
 
   public boolean check(String key) {
@@ -26,7 +23,8 @@ public class HttpSessionManager {
     httpSession.setAttribute(key, obj);
   }
 
-  public Object get(String key) {
-    return httpSession.getAttribute(key);
+  public <T> T get(String key, Class<T> type) {
+    Object value = httpSession.getAttribute(key);
+    return type.cast(value);
   }
 }
