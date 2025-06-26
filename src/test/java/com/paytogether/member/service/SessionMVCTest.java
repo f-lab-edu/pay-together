@@ -47,12 +47,12 @@ public class SessionMVCTest {
     MemberLoginRequest user2Request = new MemberLoginRequest("pay2@spring.com", "1234567!");
 
     // 첫 번째 사용자 로그인
-    ResponseEntity<String> response1 = restTemplate.postForEntity("/member/login", user1Request,
+    ResponseEntity<String> response1 = restTemplate.postForEntity("/members/login", user1Request,
         String.class);
     String sessionId1 = response1.getHeaders().getFirst("Set-Cookie");
 
     // 두 번째 사용자 로그인
-    ResponseEntity<String> response2 = restTemplate.postForEntity("/member/login", user2Request,
+    ResponseEntity<String> response2 = restTemplate.postForEntity("/members/login", user2Request,
         String.class);
     String sessionId2 = response2.getHeaders().getFirst("Set-Cookie");
 
