@@ -34,7 +34,7 @@ class MemberServiceTest {
 
     MemberJoinResult result = memberService.join(command, LocalDateTime.now());
 
-    assertThat(command.getEmail()).isEqualTo(result.getEmail());
+    assertThat(command.email()).isEqualTo(result.email());
   }
 
   @Test
