@@ -2,24 +2,8 @@ package com.paytogether.member.service.command;
 
 import com.paytogether.member.entity.Gender;
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-public class MemberJoinCommand {
-
-  private String email;
-
-  private String password;
-
-  private String address;
-
-  private String phoneNumber;
-
-  private String name;
-
-  private int age;
-
-  private Gender gender;
+public record MemberJoinCommand(String email, String password, String address, String phoneNumber, String name, int age, Gender gender) {
 
 }

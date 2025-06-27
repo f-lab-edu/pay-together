@@ -23,7 +23,7 @@ public class MemberJoinResponse {
 
   public static MemberJoinResponse fromMemberLoginResult(MemberJoinResult result) {
     return MemberJoinResponse.builder()
-        .email(result.getEmail())
+        .email(result.email())
         .build();
   }
 }
