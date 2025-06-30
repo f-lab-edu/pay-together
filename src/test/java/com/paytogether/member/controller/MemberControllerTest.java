@@ -126,9 +126,9 @@ class MemberControllerTest {
 
   private Member createMember(MemberJoinRequest request, String encodedPassword) {
     return Member.builder()
-        .email(request.getEmail()).password(encodedPassword).name(request.getName())
-        .age(request.getAge()).gender(request.getGender()).address(request.getAddress())
-        .phoneNumber(request.getPhoneNumber()).role(MemberRole.MEMBER)
+        .email(request.email()).password(encodedPassword).name(request.name())
+        .age(request.age()).gender(request.gender()).address(request.address())
+        .phoneNumber(request.phoneNumber()).role(MemberRole.MEMBER)
         .build();
   }
 }
