@@ -38,7 +38,7 @@ public class MemberController {
   @PostMapping("/login")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid MemberLoginRequest request) {
     return ApiResponse.createResponse(HttpStatus.OK.value(),
-        loginService.login(request.getEmail(), request.getPassword()));
+        loginService.login(request.email(), request.password()));
   }
 
   @PostMapping("/logout")
