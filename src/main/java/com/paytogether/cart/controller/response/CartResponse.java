@@ -1,11 +1,11 @@
 package com.paytogether.cart.controller.response;
 
-import com.paytogether.cart.service.CartProductDto;
+import com.paytogether.cart.service.result.CartProductResult;
 import java.util.List;
 
-public record CartResponse(List<CartProductDto> cartProductDtoList) {
+public record CartResponse(List<CartProductResult> cart) {
 
-  public static CartResponse of(List<CartProductDto> cartProductDtoList) {
-    return new CartResponse(cartProductDtoList);
+  public static CartResponse from(List<CartProductResult> cart) {
+    return new CartResponse(cart);
   }
 }

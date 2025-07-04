@@ -1,35 +1,45 @@
 package com.paytogether.cart.repository;
 
-import com.paytogether.cart.service.CartProductDto;
-import com.paytogether.member.service.HttpSessionManager;
-import java.util.HashMap;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-@RequiredArgsConstructor
 @Repository
 public class CartRepository {
 
-  private static final String REDIS_CART_KEY = "CART";
-  private final HttpSessionManager httpSessionManager;
+  private final RedisTemplate<String, String> redisCartTemplate;
 
-  public void saveCart(Map<String, CartProductDto> cart) {
-    httpSessionManager.set(REDIS_CART_KEY, cart);
+  public CartRepository(
+      @Qualifier("redisCartTemplate") RedisTemplate<String, String> redisCartTemplate) {
+    this.redisCartTemplate = redisCartTemplate;
   }
 
-  public void clearCart(Map<String, CartProductDto> cart) {
-    cart.clear();
-    saveCart(cart);
+  public Map<String, String> saveProduct(String key, Long productId, int quantity) {
+    HashOperations<String, String, String> hashOperations = redisCartTemplate.opsForHash();
+    hashOperations.put(key, productId.toString(), String.valueOf(quantity));
+    return hashOperations.entries(key);
   }
 
-  public void removeProduct(Map<String, CartProductDto> cart, String productId) {
-    cart.remove(productId);
-    saveCart(cart);
+  public Map<String, String> getCart(String key) {
+    HashOperations<String, String, String> hashOperations = redisCartTemplate.opsForHash();
+    return hashOperations.entries(key);
   }
 
-  public Map<String, CartProductDto> findCart() {
-    Map<String, CartProductDto> cart = httpSessionManager.get(REDIS_CART_KEY, Map.class);
-    return cart != null ? cart : new HashMap<>();
+  public Map<String, String> clearCart(String key) {
+    HashOperations<String, String, String> hashOperations = redisCartTemplate.opsForHash();
+    Map<String, String> cart = hashOperations.entries(key);
+    if (!cart.isEmpty()) {
+      hashOperations.delete(key, cart.keySet().toArray());
+    }
+    return hashOperations.entries(key);
   }
+
+  public Map<String, String> removeProduct(String key, Long productId) {
+    HashOperations<String, String, String> hashOperations = redisCartTemplate.opsForHash();
+    hashOperations.delete(key, productId.toString());
+    return hashOperations.entries(key);
+  }
+
 }

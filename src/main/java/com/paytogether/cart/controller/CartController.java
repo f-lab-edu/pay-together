@@ -3,8 +3,9 @@ package com.paytogether.cart.controller;
 import com.paytogether.cart.controller.request.AddCartProductRequest;
 import com.paytogether.cart.controller.response.CartResponse;
 import com.paytogether.cart.service.CartService;
-import com.paytogether.cart.service.result.CartResult;
+import com.paytogether.cart.service.result.CartProductResult;
 import com.paytogether.common.api.response.ApiResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,30 +26,30 @@ public class CartController {
 
   @PostMapping
   public ApiResponse<CartResponse> saveProduct(@RequestBody AddCartProductRequest request) {
-    CartResult cartResult = cartService.saveProduct(request.productId(),
+    List<CartProductResult> cartProductResults = cartService.saveProduct(request.productId(),
         request.quantity());
     return ApiResponse.createResponse(HttpStatus.OK.value(),
-        CartResponse.of(cartResult.getCartProductDtoList()));
+        CartResponse.from(cartProductResults));
   }
 
   @PutMapping
   public ApiResponse<CartResponse> clearCart() {
-    CartResult cartResult = cartService.clearCart();
+    List<CartProductResult> cartProductResults = cartService.clearCart();
     return ApiResponse.createResponse(HttpStatus.OK.value(),
-        CartResponse.of(cartResult.getCartProductDtoList()));
+        CartResponse.from(cartProductResults));
   }
 
   @DeleteMapping("/products/{productId}")
   public ApiResponse<CartResponse> removeProduct(@PathVariable Long productId) {
-    CartResult cartResult = cartService.removeProduct(productId);
+    List<CartProductResult> cartProductResults = cartService.removeProduct(productId);
     return ApiResponse.createResponse(HttpStatus.OK.value(),
-        CartResponse.of(cartResult.getCartProductDtoList()));
+        CartResponse.from(cartProductResults));
   }
 
   @GetMapping
-  public ApiResponse<CartResponse> findCart() {
-    CartResult cartResult = cartService.findCart();
+  public ApiResponse<CartResponse> getCart() {
+    List<CartProductResult> cartProductResults = cartService.getCart();
     return ApiResponse.createResponse(HttpStatus.OK.value(),
-        CartResponse.of(cartResult.getCartProductDtoList()));
+        CartResponse.from(cartProductResults));
   }
 }
