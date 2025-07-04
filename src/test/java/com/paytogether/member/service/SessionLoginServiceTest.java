@@ -49,7 +49,7 @@ class SessionLoginServiceTest {
 
     //then
     Long memberId = member.getId();
-    Long memberIdInSession = httpSessionManager.get(TestMemberConstant.LOGIN_MEMBER, Long.class);
+    Long memberIdInSession = httpSessionManager.getMemberId();
     assertThat(memberId).isEqualTo(memberIdInSession);
   }
 
