@@ -3,7 +3,7 @@ POST localhost:8080/carts
 Content-Type: application/json
 
 {
-  "productId": 10,
+  "productId": 1,
   "quantity" : 10
 }
 
