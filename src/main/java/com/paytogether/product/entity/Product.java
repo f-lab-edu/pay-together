@@ -9,14 +9,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "product_id")
   private Long id;
 
   @Enumerated(EnumType.STRING)
@@ -35,4 +38,17 @@ public class Product {
 
   @Column(nullable = false)
   private LocalDateTime createdAt;
+
+  private Product(ProductType type, ProductSellingStatus sellingStatus, String name, int price,
+      LocalDateTime createdAt) {
+    this.type = type;
+    this.sellingStatus = sellingStatus;
+    this.name = name;
+    this.price = price;
+    this.createdAt = createdAt;
+  }
+
+  public static Product create(ProductType type, ProductSellingStatus sellingStatus, String name, int price, LocalDateTime createdAt) {
+    return new Product(type, sellingStatus, name, price, createdAt);
+  }
 }
