@@ -1,5 +1,7 @@
 package com.paytogether.member.service;
 
+import com.paytogether.exception.PayTogetherErrors;
+import com.paytogether.exception.PayTogetherException;
 import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class HttpSessionManager {
 
   private final HttpSession httpSession;
+  private static final String LOGIN_MEMBER = "LOGIN_MEMBER";
 
   public void invalidate() {
     httpSession.invalidate();
@@ -19,12 +22,13 @@ public class HttpSessionManager {
     return Optional.ofNullable(httpSession.getAttribute(key)).isPresent();
   }
 
-  public void set(String key, Object obj) {
-    httpSession.setAttribute(key, obj);
+  public void set(String key, Long id) {
+    httpSession.setAttribute(key, id.toString());
   }
 
-  public <T> T get(String key, Class<T> type) {
-    Object value = httpSession.getAttribute(key);
-    return type.cast(value);
+  public Long getMemberId() {
+    Object value = httpSession.getAttribute(LOGIN_MEMBER);
+    if (value == null) throw new PayTogetherException(PayTogetherErrors.MEMBER_NOT_FOUND);
+    return Long.parseLong(value.toString());
   }
 }
