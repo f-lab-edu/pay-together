@@ -19,13 +19,13 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            .sessionCreationPolicy(SessionCreationPolicy.NEVER)
         )
         .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             //.requestMatchers(PathRequest.toH2Console()).permitAll()
-            .requestMatchers("/member/**").permitAll()
+            .requestMatchers("/**").permitAll()
             .anyRequest().authenticated()
         );
     return http.build();

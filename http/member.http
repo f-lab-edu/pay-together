@@ -1,5 +1,5 @@
 ### 회원가입
-POST localhost:8080/member/join
+POST localhost:8080/members/join
 Content-Type: application/json
 
 {
@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ### 로그인
-POST localhost:8080/member/login
+POST localhost:8080/members/login
 Content-Type: application/json
 
 {
@@ -22,4 +22,4 @@ Content-Type: application/json
 }
 
 ### 로그아웃
-POST localhost:8080/member/logout
+POST localhost:8080/members/logout

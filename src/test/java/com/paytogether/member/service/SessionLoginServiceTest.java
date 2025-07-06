@@ -100,6 +100,6 @@ class SessionLoginServiceTest {
     loginService.logout();
 
     //then
-    assertFalse(httpSessionManager.check());
+    assertFalse(httpSessionManager.check(TestMemberConstant.LOGIN_MEMBER));
   }
 }

@@ -19,10 +19,10 @@ public class MemberService {
 
   @Transactional
   public MemberJoinResult join(MemberJoinCommand command, LocalDateTime now) {
-    String encodedPassword = passwordEncoder.encode(command.getPassword());
+    String encodedPassword = passwordEncoder.encode(command.password());
     Member member = memberRepository.save(
-        Member.createMember(command.getEmail(), encodedPassword, command.getName(),
-            command.getAge(), command.getGender(), command.getAddress(), command.getPhoneNumber(),
+        Member.createMember(command.email(), encodedPassword, command.name(),
+            command.age(), command.gender(), command.address(), command.phoneNumber(),
             now));
     return MemberJoinResult.fromMember(member);
   }

@@ -1,0 +1,17 @@
+### 상품 저장 @env=local
+POST localhost:8080/carts
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity" : 10
+}
+
+### 장바구니 조회 @env=local
+GET localhost:8080/carts
+
+### 상품 개별 삭제 @env=local
+DELETE localhost:8080/carts/products/{{productId}}
+
+### 장바구니 전체 비우기 @env=local
+PUT localhost:8080/carts

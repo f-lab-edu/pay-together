@@ -60,7 +60,7 @@ class MemberControllerTest {
     given(memberService.join(any(MemberJoinCommand.class), any())).willReturn(
         MemberJoinResult.fromMember(member));
 
-    mockMvc.perform(post("/member/join")
+    mockMvc.perform(post("/members/join")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
@@ -81,7 +81,7 @@ class MemberControllerTest {
         .gender(Gender.MALE)
         .build();
 
-    mockMvc.perform(post("/member/join")
+    mockMvc.perform(post("/members/join")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
@@ -96,7 +96,7 @@ class MemberControllerTest {
     MemberLoginRequest request = new MemberLoginRequest(email, password);
     given(loginService.login(email, password)).willReturn(LoginResponse.of(email, false));
 
-    mockMvc.perform(post("/member/login")
+    mockMvc.perform(post("/members/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
@@ -108,7 +108,7 @@ class MemberControllerTest {
   void login_fail_invalidEmail() throws Exception {
     MemberLoginRequest request = new MemberLoginRequest(null, "Password1!");
 
-    mockMvc.perform(post("/member/login")
+    mockMvc.perform(post("/members/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
@@ -119,16 +119,16 @@ class MemberControllerTest {
   void logout_success() throws Exception {
     given(loginService.sessionExists()).willReturn(true);
 
-    mockMvc.perform(post("/member/logout"))
+    mockMvc.perform(post("/members/logout"))
         .andDo(print())
         .andExpect(status().isOk());
   }
 
   private Member createMember(MemberJoinRequest request, String encodedPassword) {
     return Member.builder()
-        .email(request.getEmail()).password(encodedPassword).name(request.getName())
-        .age(request.getAge()).gender(request.getGender()).address(request.getAddress())
-        .phoneNumber(request.getPhoneNumber()).role(MemberRole.MEMBER)
+        .email(request.email()).password(encodedPassword).name(request.name())
+        .age(request.age()).gender(request.gender()).address(request.address())
+        .phoneNumber(request.phoneNumber()).role(MemberRole.MEMBER)
         .build();
   }
 }
