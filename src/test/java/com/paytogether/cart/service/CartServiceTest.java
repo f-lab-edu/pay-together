@@ -6,6 +6,8 @@ import com.paytogether.cart.service.result.CartProductResult;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
+import com.paytogether.member.service.LoginService;
+import com.paytogether.member.service.MemberService;
 import com.paytogether.product.entity.Product;
 import com.paytogether.product.entity.ProductSellingStatus;
 import com.paytogether.product.entity.ProductType;
@@ -33,6 +35,9 @@ class CartServiceTest {
   private ProductRepository productRepository;
 
   @Autowired
+  private LoginService loginService;
+
+  @Autowired
   private PasswordEncoder passwordEncoder;
 
   private Long productId1;
@@ -46,6 +51,7 @@ class CartServiceTest {
         Gender.MALE,
         "address", "01012345678", LocalDateTime.now());
     memberRepository.save(member);
+    loginService.login(email, password);
 
     Product p1 = productRepository.save(Product.create(ProductType.HOME_APPLIANCES, ProductSellingStatus.SELLING, "가전제품", 1000, LocalDateTime.now()));
     Product p2 = productRepository.save(Product.create(ProductType.FOOD, ProductSellingStatus.SELLING, "식품", 1000, LocalDateTime.now()));

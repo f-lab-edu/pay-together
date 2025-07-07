@@ -55,8 +55,8 @@ class CartControllerTest {
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("body.cart[0].productId").value(productId))
-        .andExpect(jsonPath("body.cart[0].quantity").value(quantity));
+        .andExpect(jsonPath("cart[0].productId").value(productId))
+        .andExpect(jsonPath("cart[0].quantity").value(quantity));
   }
 
   @DisplayName("장바구니 조회 성공 테스트")
@@ -78,10 +78,10 @@ class CartControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("body.cart[0].productId").value(productId1))
-        .andExpect(jsonPath("body.cart[0].quantity").value(quantity1))
-        .andExpect(jsonPath("body.cart[1].productId").value(productId2))
-        .andExpect(jsonPath("body.cart[1].quantity").value(quantity2));
+        .andExpect(jsonPath("cart[0].productId").value(productId1))
+        .andExpect(jsonPath("cart[0].quantity").value(quantity1))
+        .andExpect(jsonPath("cart[1].productId").value(productId2))
+        .andExpect(jsonPath("cart[1].quantity").value(quantity2));
   }
 
   @DisplayName("장바구니 비우기 성공 테스트")
@@ -95,7 +95,7 @@ class CartControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("body.cart").isEmpty());
+        .andExpect(jsonPath("cart").isEmpty());
   }
 
   @DisplayName("장바구니 개별 상품 삭제 성공 테스트")
@@ -109,6 +109,6 @@ class CartControllerTest {
     mockMvc.perform(delete("/carts/products/{productId}", productId))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("body.cart").isEmpty());
+        .andExpect(jsonPath("cart").isEmpty());
   }
 }
