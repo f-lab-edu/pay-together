@@ -1,10 +1,10 @@
 package com.paytogether.cart.service;
 
+import com.paytogether.cart.exception.CartErrors;
+import com.paytogether.cart.exception.CartException;
 import com.paytogether.cart.repository.CartRepository;
 import com.paytogether.cart.service.result.CartProductResult;
 import com.paytogether.member.service.HttpSessionManager;
-import com.paytogether.product.exception.ProductErrors;
-import com.paytogether.product.exception.ProductException;
 import com.paytogether.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +78,7 @@ public class CartService {
 
   private void validateProductId(Long productId) {
     if (!productRepository.existsById(productId)) {
-      throw new ProductException(ProductErrors.PRODUCT_NOT_FOUND);
+      throw new CartException(CartErrors.INVALID_INFO);
     }
   }
 }
