@@ -1,0 +1,12 @@
+package com.paytogether.member.exception;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public enum MemberErrors {
+
+  MEMBER_NOT_FOUND("등록된 회원이 아닙니다"),
+  INVALID_INFO("잘못된 정보를 입력했습니다");
+
+  private final String explain;
+}
