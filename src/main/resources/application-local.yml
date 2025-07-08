@@ -31,3 +31,4 @@ spring:
   session:
     redis:
       namespace: session-pay
+      timeout: 3600s
