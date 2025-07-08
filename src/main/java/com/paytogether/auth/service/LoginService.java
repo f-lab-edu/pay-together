@@ -1,6 +1,6 @@
-package com.paytogether.member.service;
+package com.paytogether.auth.service;
 
-import com.paytogether.member.controller.response.LoginResponse;
+import com.paytogether.auth.controller.response.LoginResponse;
 
 public interface LoginService {
 

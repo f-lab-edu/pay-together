@@ -1,4 +1,4 @@
-package com.paytogether.member.service;
+package com.paytogether.auth.service;
 
 import com.paytogether.member.exception.MemberErrors;
 import com.paytogether.member.exception.MemberException;
