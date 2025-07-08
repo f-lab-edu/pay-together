@@ -1,0 +1,11 @@
+### 로그인
+POST localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "pay@spring.com",
+  "password": "1234!234"
+}
+
+### 로그아웃
+POST localhost:8080/auth/logout
