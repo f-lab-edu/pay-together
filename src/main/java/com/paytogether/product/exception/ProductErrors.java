@@ -1,7 +1,9 @@
 package com.paytogether.product.exception;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum ProductErrors {
 

@@ -1,10 +1,11 @@
 package com.paytogether.member.exception;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-public class MemberException extends RuntimeException{
+public class MemberException extends RuntimeException {
 
   private final MemberErrors errors;
 
+  public MemberException(MemberErrors errors) {
+    super(errors.getExplain());
+    this.errors = errors;
+  }
 }
