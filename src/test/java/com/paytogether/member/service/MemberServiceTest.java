@@ -3,9 +3,11 @@ package com.paytogether.member.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.paytogether.member.entity.Gender;
+import com.paytogether.member.repository.MemberRepository;
 import com.paytogether.member.service.command.MemberJoinCommand;
 import com.paytogether.member.service.result.MemberJoinResult;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,14 @@ class MemberServiceTest {
 
   @Autowired
   private MemberService memberService;
+
+  @Autowired
+  private MemberRepository memberRepository;
+
+  @BeforeEach
+  void before() {
+    memberRepository.deleteAll();
+  }
 
   @Test
   void join_success() {

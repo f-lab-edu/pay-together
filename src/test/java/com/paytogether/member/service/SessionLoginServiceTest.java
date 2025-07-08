@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.paytogether.exception.PayTogetherException;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
+import com.paytogether.member.exception.MemberException;
 import com.paytogether.member.repository.MemberRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +65,7 @@ class SessionLoginServiceTest {
 
     //when, then
     assertThatThrownBy(() -> loginService.login(wrongEmail, password))
-        .isInstanceOf(PayTogetherException.class);
+        .isInstanceOf(MemberException.class);
   }
 
   @Test
@@ -81,7 +81,7 @@ class SessionLoginServiceTest {
 
     //then
     assertThatThrownBy(() -> loginService.login(email, wrongPassword))
-        .isInstanceOf(PayTogetherException.class);
+        .isInstanceOf(MemberException.class);
   }
 
   @Test

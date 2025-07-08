@@ -1,9 +1,9 @@
 package com.paytogether.member.service;
 
-import com.paytogether.exception.PayTogetherErrors;
-import com.paytogether.exception.PayTogetherException;
 import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.entity.Member;
+import com.paytogether.member.exception.MemberErrors;
+import com.paytogether.member.exception.MemberException;
 import com.paytogether.member.repository.MemberRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,13 @@ public class SessionLoginService implements LoginService {
   public LoginResponse login(String email, String rawPassword) {
     Optional<Member> optionalMember = memberRepository.findByEmail(email);
     if (optionalMember.isEmpty()) {
-      throw new PayTogetherException(PayTogetherErrors.INVALID_INFO);
+      throw new MemberException(MemberErrors.INVALID_INFO);
     }
 
     Member presentMember = optionalMember.get();
     String encodedPassword = presentMember.getPassword();
     if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-      throw new PayTogetherException(PayTogetherErrors.INVALID_INFO);
+      throw new MemberException(MemberErrors.INVALID_INFO);
     }
 
     boolean duplicateLogin = false;
