@@ -10,12 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytogether.config.TestSecurityConfig;
 import com.paytogether.member.controller.request.MemberJoinRequest;
-import com.paytogether.member.controller.request.MemberLoginRequest;
-import com.paytogether.member.controller.response.LoginResponse;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.entity.MemberRole;
-import com.paytogether.member.service.LoginService;
 import com.paytogether.member.service.MemberService;
 import com.paytogether.member.service.command.MemberJoinCommand;
 import com.paytogether.member.service.result.MemberJoinResult;
@@ -40,9 +37,6 @@ class MemberControllerTest {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @MockitoBean
-  private LoginService loginService;
-
   @Test
   void join_success_returnMemberJoinResponse() throws Exception {
     String email = "pay@spring.com";
@@ -65,7 +59,7 @@ class MemberControllerTest {
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("body.email").value(email));
+        .andExpect(jsonPath("email").value(email));
   }
 
   @Test
@@ -86,42 +80,6 @@ class MemberControllerTest {
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
         .andExpect(status().isBadRequest());
-  }
-
-
-  @Test
-  void login_success() throws Exception {
-    String email = "email@spring.com";
-    String password = "!!password";
-    MemberLoginRequest request = new MemberLoginRequest(email, password);
-    given(loginService.login(email, password)).willReturn(LoginResponse.of(email, false));
-
-    mockMvc.perform(post("/members/login")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(request)))
-        .andDo(print())
-        .andExpect(status().is2xxSuccessful())
-        .andExpect(jsonPath("body.email").value(email));
-  }
-
-  @Test
-  void login_fail_invalidEmail() throws Exception {
-    MemberLoginRequest request = new MemberLoginRequest(null, "Password1!");
-
-    mockMvc.perform(post("/members/login")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(request)))
-        .andDo(print())
-        .andExpect(status().isBadRequest());
-  }
-
-  @Test
-  void logout_success() throws Exception {
-    given(loginService.sessionExists()).willReturn(true);
-
-    mockMvc.perform(post("/members/logout"))
-        .andDo(print())
-        .andExpect(status().isOk());
   }
 
   private Member createMember(MemberJoinRequest request, String encodedPassword) {

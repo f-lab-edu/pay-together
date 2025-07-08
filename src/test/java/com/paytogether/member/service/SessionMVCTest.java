@@ -2,7 +2,7 @@ package com.paytogether.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.paytogether.member.controller.request.MemberLoginRequest;
+import com.paytogether.auth.controller.request.LoginRequest;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.repository.MemberRepository;
@@ -43,16 +43,16 @@ public class SessionMVCTest {
   @Test
   @DisplayName("서로 다른 사용자 로그인 시 독립된 세션이 생성되어야 한다")
   void login_different_member_different_session() {
-    MemberLoginRequest user1Request = new MemberLoginRequest("pay1@spring.com", "1234567!");
-    MemberLoginRequest user2Request = new MemberLoginRequest("pay2@spring.com", "1234567!");
+    LoginRequest user1Request = new LoginRequest("pay1@spring.com", "1234567!");
+    LoginRequest user2Request = new LoginRequest("pay2@spring.com", "1234567!");
 
     // 첫 번째 사용자 로그인
-    ResponseEntity<String> response1 = restTemplate.postForEntity("/members/login", user1Request,
+    ResponseEntity<String> response1 = restTemplate.postForEntity("/auth/login", user1Request,
         String.class);
     String sessionId1 = response1.getHeaders().getFirst("Set-Cookie");
 
     // 두 번째 사용자 로그인
-    ResponseEntity<String> response2 = restTemplate.postForEntity("/members/login", user2Request,
+    ResponseEntity<String> response2 = restTemplate.postForEntity("/auth/login", user2Request,
         String.class);
     String sessionId2 = response2.getHeaders().getFirst("Set-Cookie");
 
