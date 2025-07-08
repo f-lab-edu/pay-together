@@ -1,5 +1,6 @@
 package com.paytogether.cart.controller;
 
+import com.paytogether.auth.aop.LoginRequired;
 import com.paytogether.cart.controller.request.AddCartProductRequest;
 import com.paytogether.cart.controller.response.CartResponse;
 import com.paytogether.cart.service.CartService;
@@ -22,6 +23,8 @@ public class CartController {
 
   private final CartService cartService;
 
+
+  @LoginRequired
   @PostMapping
   public CartResponse saveProduct(@RequestBody AddCartProductRequest request) {
     List<CartProductResult> cartProductResults = cartService.saveProduct(request.productId(),
@@ -29,18 +32,21 @@ public class CartController {
     return CartResponse.from(cartProductResults);
   }
 
+  @LoginRequired
   @PutMapping
   public CartResponse clearCart() {
     List<CartProductResult> cartProductResults = cartService.clearCart();
     return CartResponse.from(cartProductResults);
   }
 
+  @LoginRequired
   @DeleteMapping("/products/{productId}")
   public CartResponse removeProduct(@PathVariable Long productId) {
     List<CartProductResult> cartProductResults = cartService.removeProduct(productId);
     return CartResponse.from(cartProductResults);
   }
 
+  @LoginRequired
   @GetMapping
   public CartResponse getCart() {
     List<CartProductResult> cartProductResults = cartService.getCart();
