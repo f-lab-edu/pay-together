@@ -24,7 +24,6 @@ public class LoginController {
     return loginService.login(request.email(), request.password());
   }
 
-  @LoginRequired
   @PostMapping("/logout")
   public ResponseEntity<String> logout() {
     loginService.logout();
