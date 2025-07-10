@@ -1,5 +1,6 @@
 package com.paytogether.cart.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,11 +11,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paytogether.auth.config.WebConfig;
+import com.paytogether.auth.intercepter.LoginCheckInterceptor;
 import com.paytogether.cart.controller.request.AddCartProductRequest;
 import com.paytogether.cart.service.CartService;
 import com.paytogether.cart.service.result.CartProductResult;
-import com.paytogether.config.TestSecurityConfig;
+import com.paytogether.config.SecurityConfig;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(TestSecurityConfig.class)
+@Import({WebConfig.class, SecurityConfig.class})
 @WebMvcTest(CartController.class)
 class CartControllerTest {
 
@@ -36,6 +40,14 @@ class CartControllerTest {
 
   @Autowired
   private ObjectMapper objectMapper;
+
+  @MockitoBean
+  private LoginCheckInterceptor loginCheckInterceptor;
+
+  @BeforeEach
+  void setUp() throws Exception {
+    given(loginCheckInterceptor.preHandle(any(), any(), any())).willReturn(true);
+  }
 
   @DisplayName("상품을 장바구니에 추가 요청 성공 테스트")
   @Test

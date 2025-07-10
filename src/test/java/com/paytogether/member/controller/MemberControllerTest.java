@@ -8,7 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paytogether.config.TestSecurityConfig;
+import com.paytogether.auth.config.WebConfig;
+import com.paytogether.auth.intercepter.LoginCheckInterceptor;
+import com.paytogether.config.SecurityConfig;
 import com.paytogether.member.controller.request.MemberJoinRequest;
 import com.paytogether.member.entity.Gender;
 import com.paytogether.member.entity.Member;
@@ -16,6 +18,7 @@ import com.paytogether.member.entity.MemberRole;
 import com.paytogether.member.service.MemberService;
 import com.paytogether.member.service.command.MemberJoinCommand;
 import com.paytogether.member.service.result.MemberJoinResult;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,7 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(TestSecurityConfig.class)
+@Import({WebConfig.class, SecurityConfig.class})
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
 
@@ -36,6 +39,14 @@ class MemberControllerTest {
 
   @Autowired
   private ObjectMapper objectMapper;
+
+  @MockitoBean
+  private LoginCheckInterceptor loginCheckInterceptor;
+
+  @BeforeEach
+  void setUp() throws Exception {
+    given(loginCheckInterceptor.preHandle(any(), any(), any())).willReturn(true);
+  }
 
   @Test
   void join_success_returnMemberJoinResponse() throws Exception {

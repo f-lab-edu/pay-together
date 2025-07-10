@@ -1,5 +1,6 @@
 package com.paytogether.auth;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -7,12 +8,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paytogether.auth.config.WebConfig;
 import com.paytogether.auth.controller.LoginController;
 import com.paytogether.auth.controller.request.LoginRequest;
 import com.paytogether.auth.controller.response.LoginResponse;
+import com.paytogether.auth.intercepter.LoginCheckInterceptor;
 import com.paytogether.auth.service.LoginService;
-import com.paytogether.config.TestSecurityConfig;
+import com.paytogether.config.SecurityConfig;
 import com.paytogether.member.service.TestMemberConstant;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,7 +26,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(TestSecurityConfig.class)
+@Import({WebConfig.class, SecurityConfig.class})
 @WebMvcTest(LoginController.class)
 public class LoginControllerTest {
 
@@ -35,6 +39,14 @@ public class LoginControllerTest {
 
   @MockitoBean
   private LoginService loginService;
+
+  @MockitoBean
+  private LoginCheckInterceptor loginCheckInterceptor;
+
+  @BeforeEach
+  void setUp() throws Exception {
+    given(loginCheckInterceptor.preHandle(any(), any(), any())).willReturn(true);
+  }
 
   @Test
   void login_success() throws Exception {
