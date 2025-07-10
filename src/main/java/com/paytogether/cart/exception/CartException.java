@@ -1,5 +1,8 @@
 package com.paytogether.cart.exception;
 
+import lombok.Getter;
+
+@Getter
 public class CartException extends RuntimeException {
 
   private final CartErrors errors;
