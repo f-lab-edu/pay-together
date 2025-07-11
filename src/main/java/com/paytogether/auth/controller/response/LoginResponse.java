@@ -1,4 +1,4 @@
-package com.paytogether.member.controller.response;
+package com.paytogether.auth.controller.response;
 
 public record LoginResponse(
     boolean duplicateLogin,

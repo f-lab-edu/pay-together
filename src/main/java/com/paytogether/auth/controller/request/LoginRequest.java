@@ -1,10 +1,10 @@
-package com.paytogether.member.controller.request;
+package com.paytogether.auth.controller.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record MemberLoginRequest(
+public record LoginRequest(
     @NotBlank
     @Email(message = "이메일 형식에 맞게 작성해주세요.")
     String email,

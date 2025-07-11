@@ -1,6 +1,6 @@
-package com.paytogether.member.service;
+package com.paytogether.auth.service;
 
-import com.paytogether.member.controller.response.LoginResponse;
+import com.paytogether.auth.controller.response.LoginResponse;
 import com.paytogether.member.entity.Member;
 import com.paytogether.member.exception.MemberErrors;
 import com.paytogether.member.exception.MemberException;

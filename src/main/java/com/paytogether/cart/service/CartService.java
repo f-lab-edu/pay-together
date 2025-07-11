@@ -4,7 +4,7 @@ import com.paytogether.cart.exception.CartErrors;
 import com.paytogether.cart.exception.CartException;
 import com.paytogether.cart.repository.CartRepository;
 import com.paytogether.cart.service.result.CartProductResult;
-import com.paytogether.member.service.HttpSessionManager;
+import com.paytogether.auth.service.HttpSessionManager;
 import com.paytogether.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Map;
