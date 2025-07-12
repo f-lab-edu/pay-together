@@ -1,9 +1,8 @@
 package com.paytogether.auth.controller;
 
-import com.paytogether.auth.aop.LoginRequired;
-import com.paytogether.auth.service.LoginService;
 import com.paytogether.auth.controller.request.LoginRequest;
 import com.paytogether.auth.controller.response.LoginResponse;
+import com.paytogether.auth.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
