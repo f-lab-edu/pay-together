@@ -1,5 +1,5 @@
 ### 상품 저장 @env=local
-POST localhost:8080/carts
+POST localhost:8080/v1/carts
 Content-Type: application/json
 
 {
@@ -8,10 +8,10 @@ Content-Type: application/json
 }
 
 ### 장바구니 조회 @env=local
-GET localhost:8080/carts
+GET localhost:8080/v1/carts
 
 ### 상품 개별 삭제 @env=local
-DELETE localhost:8080/carts/products/{{productId}}
+DELETE localhost:8080/v1/carts/products/{{productId}}
 
 ### 장바구니 전체 비우기 @env=local
-PUT localhost:8080/carts
+PUT localhost:8080/v1/carts
