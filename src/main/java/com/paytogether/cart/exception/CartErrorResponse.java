@@ -1,15 +1,11 @@
 package com.paytogether.cart.exception;
 
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
-public class CartErrorResponse {
+public record CartErrorResponse(String code, String explain, int status, LocalDateTime now) {
 
-  private final String code;
-  private final String explain;
-  private final int status;
-  private final LocalDateTime now;
+  public static CartErrorResponse from(CartErrors errors) {
+    return new CartErrorResponse(errors.getCode(), errors.getExplain(), errors.getStatus().value(),
+        LocalDateTime.now());
+  }
 }

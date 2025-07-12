@@ -11,8 +11,7 @@ public class ProductExceptionAdvice {
   @ExceptionHandler(ProductException.class)
   public ResponseEntity<ProductErrorResponse> advice(ProductException e) {
     ProductErrors errors = e.getErrors();
-    ProductErrorResponse productErrorResponse = new ProductErrorResponse(errors.getCode(),
-        errors.getExplain(), errors.getStatus().value(), LocalDateTime.now());
+    ProductErrorResponse productErrorResponse = ProductErrorResponse.from(errors);
     return ResponseEntity.status(errors.getStatus()).body(productErrorResponse);
   }
 }

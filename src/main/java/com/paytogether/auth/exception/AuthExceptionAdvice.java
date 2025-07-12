@@ -11,8 +11,7 @@ public class AuthExceptionAdvice {
   @ExceptionHandler(AuthException.class)
   public ResponseEntity<AuthErrorResponse> advice(AuthException e) {
     AuthErrors errors = e.getErrors();
-    AuthErrorResponse authErrorResponse = new AuthErrorResponse(errors.getCode(),
-        errors.getExplain(), errors.getStatus().value(), LocalDateTime.now());
+    AuthErrorResponse authErrorResponse = AuthErrorResponse.from(errors);
     return ResponseEntity.status(errors.getStatus()).body(authErrorResponse);
   }
 }

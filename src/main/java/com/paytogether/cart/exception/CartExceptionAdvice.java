@@ -11,8 +11,7 @@ public class CartExceptionAdvice {
   @ExceptionHandler(CartException.class)
   public ResponseEntity<CartErrorResponse> advice(CartException e) {
     CartErrors errors = e.getErrors();
-    CartErrorResponse cartErrorResponse = new CartErrorResponse(errors.getCode(),
-        errors.getExplain(), errors.getStatus().value(), LocalDateTime.now());
+    CartErrorResponse cartErrorResponse = CartErrorResponse.from(errors);
     return ResponseEntity.status(errors.getStatus()).body(cartErrorResponse);
   }
 }
