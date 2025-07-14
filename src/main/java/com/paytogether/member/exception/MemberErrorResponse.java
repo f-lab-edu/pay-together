@@ -1,15 +1,11 @@
 package com.paytogether.member.exception;
 
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
-public class MemberErrorResponse {
+public record MemberErrorResponse(String code, String explain, int status, LocalDateTime now) {
 
-  private final String code;
-  private final String explain;
-  private final int status;
-  private final LocalDateTime now;
+  public static MemberErrorResponse from(MemberErrors errors) {
+    return new MemberErrorResponse(errors.getCode(), errors.getExplain(),
+        errors.getStatus().value(), LocalDateTime.now());
+  }
 }

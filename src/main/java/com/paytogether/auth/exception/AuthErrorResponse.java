@@ -1,15 +1,11 @@
 package com.paytogether.auth.exception;
 
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
-public class AuthErrorResponse {
+public record AuthErrorResponse(String code, String explain, int status, LocalDateTime now) {
 
-  private final String code;
-  private final String explain;
-  private final int status;
-  private final LocalDateTime now;
+  public static AuthErrorResponse from(AuthErrors errors) {
+    return new AuthErrorResponse(errors.getCode(), errors.getExplain(), errors.getStatus().value(),
+        LocalDateTime.now());
+  }
 }
