@@ -1,11 +1,15 @@
 package com.paytogether.cart.service;
 
+import com.paytogether.auth.service.HttpSessionManager;
 import com.paytogether.cart.exception.CartErrors;
 import com.paytogether.cart.exception.CartException;
 import com.paytogether.cart.repository.CartRepository;
 import com.paytogether.cart.service.result.CartProductResult;
-import com.paytogether.auth.service.HttpSessionManager;
 import com.paytogether.product.repository.ProductRepository;
+import com.paytogether.stock.entity.Stock;
+import com.paytogether.stock.exception.StockErrors;
+import com.paytogether.stock.exception.StockException;
+import com.paytogether.stock.repository.StockRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +25,15 @@ public class CartService {
   private final CartRepository cartRepository;
   private final ProductRepository productRepository;
   private final HttpSessionManager httpSessionManager;
+  private final StockRepository stockRepository;
 
   public List<CartProductResult> saveProduct(Long productId, int quantity) {
     validateProductId(productId);
+
+    Stock stock = stockRepository.findByProductId(productId);
+    if (stock.quantityLessThan(quantity)) {
+      throw new StockException(StockErrors.NOT_ENOUGH_QUANTITY);
+    }
 
     Long memberId = getMemberIdInSession();
     String key = generateKey(memberId);
