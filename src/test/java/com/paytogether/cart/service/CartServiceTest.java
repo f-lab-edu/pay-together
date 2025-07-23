@@ -52,8 +52,8 @@ class CartServiceTest {
     memberRepository.save(member);
     loginService.login(email, password);
 
-    Product p1 = productRepository.save(Product.create(ProductType.HOME_APPLIANCES, ProductSellingStatus.SELLING, "가전제품", 1000, 100, LocalDateTime.now()));
-    Product p2 = productRepository.save(Product.create(ProductType.FOOD, ProductSellingStatus.SELLING, "식품", 1000, 100, LocalDateTime.now()));
+    Product p1 = productRepository.save(Product.create(ProductType.HOME_APPLIANCES, ProductSellingStatus.SELLING, "가전제품", 1000, LocalDateTime.now()));
+    Product p2 = productRepository.save(Product.create(ProductType.FOOD, ProductSellingStatus.SELLING, "식품", 1000, LocalDateTime.now()));
 
     productId1 = p1.getId();
     productId2 = p2.getId();
