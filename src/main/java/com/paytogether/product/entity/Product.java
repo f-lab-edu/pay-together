@@ -48,7 +48,8 @@ public class Product {
     this.createdAt = createdAt;
   }
 
-  public static Product create(ProductType type, ProductSellingStatus sellingStatus, String name, int price, LocalDateTime createdAt) {
+  public static Product create(ProductType type, ProductSellingStatus sellingStatus, String name,
+      int price, LocalDateTime createdAt) {
     return new Product(type, sellingStatus, name, price, createdAt);
   }
 }

@@ -1,10 +1,10 @@
 package com.paytogether.cart.service;
 
-import com.paytogether.cart.exception.CartErrors;
-import com.paytogether.cart.exception.CartException;
+import com.paytogether.auth.service.HttpSessionManager;
 import com.paytogether.cart.repository.CartRepository;
 import com.paytogether.cart.service.result.CartProductResult;
-import com.paytogether.auth.service.HttpSessionManager;
+import com.paytogether.product.exception.ProductErrors;
+import com.paytogether.product.exception.ProductException;
 import com.paytogether.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,9 @@ public class CartService {
   private final HttpSessionManager httpSessionManager;
 
   public List<CartProductResult> saveProduct(Long productId, int quantity) {
-    validateProductId(productId);
+    if (!productRepository.existsById(productId)) {
+      throw new ProductException(ProductErrors.PRODUCT_NOT_FOUND);
+    }
 
     Long memberId = getMemberIdInSession();
     String key = generateKey(memberId);
@@ -74,11 +76,5 @@ public class CartService {
 
   private String generateKey(Long memberId) {
     return CART_KEY + memberId;
-  }
-
-  private void validateProductId(Long productId) {
-    if (!productRepository.existsById(productId)) {
-      throw new CartException(CartErrors.INVALID_INFO);
-    }
   }
 }
