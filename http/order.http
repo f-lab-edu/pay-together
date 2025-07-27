@@ -1,0 +1,10 @@
+### 주문 생성
+POST localhost:8080/v1/orders
+Content-Type: application/json
+
+{
+  "productQuantityMap": {
+    "1": 2,
+    "2": 4
+  }
+}
