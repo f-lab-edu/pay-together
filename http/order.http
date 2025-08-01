@@ -2,9 +2,13 @@
 POST localhost:8080/v1/orders
 Content-Type: application/json
 
-{
-  "productQuantityMap": {
-    "1": 2,
-    "2": 4
+[
+  {
+    "productId": 1,
+    "quantity": 2
+  },
+  {
+    "productId": 2,
+    "quantity": 1
   }
-}
+]
