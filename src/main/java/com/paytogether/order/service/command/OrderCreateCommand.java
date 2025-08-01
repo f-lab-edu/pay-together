@@ -1,7 +1,7 @@
 package com.paytogether.order.service.command;
 
-import java.util.Map;
+import java.util.List;
 
-public record OrderCreateCommand(Map<Long, Integer> productQuantityMap) {
+public record OrderCreateCommand(List<ProductQuantity> prductQuantityList) {
 
 }
