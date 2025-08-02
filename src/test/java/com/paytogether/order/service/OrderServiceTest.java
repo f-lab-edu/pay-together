@@ -1,6 +1,5 @@
 package com.paytogether.order.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
 import com.paytogether.auth.service.HttpSessionManager;
@@ -41,6 +40,7 @@ class OrderServiceTest {
   private ProductRepository productRepository;
 
   private List<Product> productList;
+
   @BeforeEach
   void before() {
     loginHelper.loginAsTestUser();
@@ -57,17 +57,13 @@ class OrderServiceTest {
   void order() {
     // given
     List<ProductQuantity> productQuantityList = List.of(
-        new ProductQuantity(1L, 10),
-        new ProductQuantity(2L, 20)
+        ProductQuantity.withoutPrice(1L, 10),
+        ProductQuantity.withoutPrice(2L, 20)
     );
     ProductQuantities productQuantities = new ProductQuantities(productQuantityList);
 
     // when
-    OrderCreateResult result = orderService.order(
-        productQuantities,
-        productList,
-        LocalDateTime.now()
-    );
+    OrderCreateResult result = orderService.order(productQuantities, LocalDateTime.now());
     // then
     SoftAssertions softAssertions = new SoftAssertions();
     softAssertions.assertThat(result.orderTotalPrice()).isEqualTo(50000);
@@ -77,6 +73,29 @@ class OrderServiceTest {
         .containsExactlyInAnyOrder(
             tuple(1L, 10, 10000),
             tuple(2L, 20, 40000)
+        );
+  }
+
+  @DisplayName("등록되지 않은 상품을 주문했을 때 해당 상품은 제외되고 주문이 된다")
+  @Test
+  void order_exclude_wrong_productId() {
+    // given
+    Long wrongProductId = 3L;
+    List<ProductQuantity> productQuantityList = List.of(
+        ProductQuantity.withoutPrice(1L, 10),
+        ProductQuantity.withoutPrice(wrongProductId, 20)
+    );
+    ProductQuantities productQuantities = new ProductQuantities(productQuantityList);
+    // when
+    OrderCreateResult result = orderService.order(productQuantities, LocalDateTime.now());
+    // then
+    SoftAssertions softAssertions = new SoftAssertions();
+    softAssertions.assertThat(result.orderTotalPrice()).isEqualTo(10000);
+    softAssertions.assertThat(result.orderProductResults()).hasSize(1);
+    softAssertions.assertThat(result.orderProductResults())
+        .extracting("productId", "quantity", "totalPrice")
+        .containsExactlyInAnyOrder(
+            tuple(1L, 10, 10000)
         );
   }
 }
