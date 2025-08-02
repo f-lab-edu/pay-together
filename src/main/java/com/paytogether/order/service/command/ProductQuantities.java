@@ -17,12 +17,10 @@ public class ProductQuantities {
   }
 
   public List<Long> getProductIdList() {
-    return productQuantities.stream()
-        .map(ProductQuantity::productId)
-        .collect(Collectors.toList());
+    return productQuantities.stream().map(ProductQuantity::productId).collect(Collectors.toList());
   }
 
-  public ProductQuantities extractCanOrderProducts(List<Stock> stocks) {
+  public ProductQuantities filterByStock(List<Stock> stocks) {
     Map<Long, Integer> stockMap = stocks.stream()
         .collect(Collectors.toMap(Stock::getProductId, Stock::getQuantity));
 
@@ -36,15 +34,19 @@ public class ProductQuantities {
     return new ProductQuantities(filtered);
   }
 
-  public int calTotalPrice(List<Product> products) {
-    Map<Long, Integer> productIdQuantityMap = productQuantities.stream()
-        .collect(Collectors.toMap(
-            ProductQuantity::productId,
-            ProductQuantity::quantity
-        ));
+  public ProductQuantities updateProductPrice(List<Product> products) {
+    List<ProductQuantity> filtered = products.stream().flatMap(
+            product -> productQuantities.stream()
+                .filter(pq -> pq.productId().equals(product.getId()))
+                .map(pq -> new ProductQuantity(pq.productId(), pq.quantity(), product.getPrice())))
+        .collect(Collectors.toList());
 
-    return products.stream()
-        .mapToInt(p -> p.getPrice() * productIdQuantityMap.get(p.getId()))
+    return new ProductQuantities(filtered);
+  }
+
+  public int calTotalPrice() {
+    return productQuantities.stream()
+        .mapToInt(pq -> pq.price() * pq.quantity())
         .sum();
   }
 }

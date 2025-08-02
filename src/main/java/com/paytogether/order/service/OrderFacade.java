@@ -31,10 +31,12 @@ public class OrderFacade {
 
     List<Long> productIds = productQuantities.getProductIdList();
     List<Product> products = productService.findProductsByIds(productIds);
+    ProductQuantities updateProductQuantities = productQuantities.updateProductPrice(products);
 
     List<Stock> stocks = stockService.findStocksByProductIds(productIds);
-    stockService.decreaseStocks(productQuantities, stocks);
+    ProductQuantities availableProductQuantities = updateProductQuantities.filterByStock(stocks);
+    stockService.decreaseStocks(availableProductQuantities, stocks);
 
-    return orderService.order(productQuantities, products, orderedAt);
+    return orderService.order(availableProductQuantities, orderedAt);
   }
 }

@@ -8,7 +8,6 @@ import com.paytogether.order.service.result.OrderCreateResult;
 import com.paytogether.order.service.result.OrderProductResult;
 import com.paytogether.orderproduct.entity.OrderProduct;
 import com.paytogether.orderproduct.service.OrderProductService;
-import com.paytogether.product.entity.Product;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,8 @@ public class OrderService {
   private final OrderRepository orderRepository;
   private final OrderProductService orderProductService;
 
-  public OrderCreateResult order(ProductQuantities productQuantities, List<Product> products,
-      LocalDateTime orderedAt) {
-    int totalPrice = productQuantities.calTotalPrice(products);
+  public OrderCreateResult order(ProductQuantities productQuantities, LocalDateTime orderedAt) {
+    int totalPrice = productQuantities.calTotalPrice();
     Long memberId = httpSessionManager.getMemberId();
 
     Order order = Order.create(memberId, totalPrice, orderedAt);
@@ -32,7 +30,7 @@ public class OrderService {
     Long orderId = savedOrder.getId();
 
     List<OrderProduct> orderProducts = orderProductService.createOrderProduct(productQuantities,
-        products, orderId);
+        orderId);
 
     List<OrderProductResult> result = OrderProductResult.from(orderProducts);
     return OrderCreateResult.of(totalPrice, result);
