@@ -10,16 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytogether.auth.config.WebConfig;
 import com.paytogether.auth.intercepter.LoginCheckInterceptor;
-import com.paytogether.cart.controller.request.AddCartProductRequest;
-import com.paytogether.cart.service.result.CartProductResult;
 import com.paytogether.config.SecurityConfig;
 import com.paytogether.order.controller.request.OrderCreateRequest;
-import com.paytogether.order.service.OrderService;
+import com.paytogether.order.service.OrderFacade;
 import com.paytogether.order.service.result.OrderCreateResult;
 import com.paytogether.order.service.result.OrderProductResult;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +37,7 @@ class OrderControllerTest {
   private ObjectMapper objectMapper;
 
   @MockitoBean
-  private OrderService orderService;
+  private OrderFacade orderFacade;
 
   @MockitoBean
   private LoginCheckInterceptor loginCheckInterceptor;
@@ -51,19 +47,18 @@ class OrderControllerTest {
     given(loginCheckInterceptor.preHandle(any(), any(), any())).willReturn(true);
   }
 
-  @DisplayName("주문 성공 테스")
+  @DisplayName("주문 성공 테스트")
   @Test
   void order() throws Exception {
     // given
-    Map<Long, Integer> productQuantityMap = new HashMap<>();
     Long productId1 = 1L;
     int productQuantity1 = 10;
-    productQuantityMap.put(productId1, productQuantity1);
+    OrderCreateRequest ocr1 = new OrderCreateRequest(productId1, productQuantity1);
 
     Long productId2 = 2L;
     int productQuantity2 = 20;
-    productQuantityMap.put(productId2, productQuantity2);
-    OrderCreateRequest request = new OrderCreateRequest(productQuantityMap);
+    OrderCreateRequest ocr2 = new OrderCreateRequest(productId1, productQuantity1);
+    List<OrderCreateRequest> request = List.of(ocr1, ocr2);
 
     OrderCreateResult orderCreateResult = new OrderCreateResult(
         900,
@@ -72,12 +67,12 @@ class OrderControllerTest {
             new OrderProductResult(productId2, productQuantity2, 800)
         )
     );
-    given(orderService.order(any(), any())).willReturn(orderCreateResult);
+    given(orderFacade.order(any(), any())).willReturn(orderCreateResult);
 
     // when
     mockMvc.perform(post("/v1/orders")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(request)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("orderTotalPrice").value(900))
