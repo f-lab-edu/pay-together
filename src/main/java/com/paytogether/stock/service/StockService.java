@@ -31,7 +31,7 @@ public class StockService {
 
   private Stock findStockByProductId(List<Stock> stocks, Long productId) {
     return stocks.stream()
-        .filter(s -> s.getId().equals(productId))
+        .filter(s -> s.getProductId().equals(productId))
         .findFirst()
         .orElseThrow(() -> new StockException(StockErrors.INVALID_PRODUCT_ID));
   }
