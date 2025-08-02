@@ -16,10 +16,8 @@ public class OrderProductService {
   private final OrderProductRepository orderProductRepository;
   private final OrderProductFactory orderProductFactory;
 
-  public List<OrderProduct> createOrderProduct(ProductQuantities productQuantities,
-      List<Product> products, Long orderId) {
-    List<OrderProduct> orderProducts = orderProductFactory.getOrderProducts(productQuantities,
-        products, orderId);
+  public List<OrderProduct> createOrderProduct(ProductQuantities productQuantities, Long orderId) {
+    List<OrderProduct> orderProducts = orderProductFactory.getOrderProducts(productQuantities, orderId);
     orderProductRepository.saveAll(orderProducts);
     return orderProducts;
   }

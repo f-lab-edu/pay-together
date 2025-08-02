@@ -9,7 +9,7 @@ public record OrderCreateRequest(Long productId, int quantity) {
 
   public static OrderCreateCommand toOrderCreateCommand(List<OrderCreateRequest> request) {
     List<ProductQuantity> productQuantityList = request.stream()
-        .map(orderCreateRequest -> new ProductQuantity(
+        .map(orderCreateRequest -> ProductQuantity.withoutPrice(
             orderCreateRequest.productId(),
             orderCreateRequest.quantity()
         ))

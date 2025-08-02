@@ -21,9 +21,7 @@ public class StockService {
   }
 
   public void decreaseStocks(ProductQuantities productQuantities, List<Stock> stocks) {
-    ProductQuantities availableProductQuantities = productQuantities.extractCanOrderProducts(
-        stocks);
-    for (ProductQuantity pq : availableProductQuantities.getProductQuantities()) {
+    for (ProductQuantity pq : productQuantities.getProductQuantities()) {
       Stock stock = findStockByProductId(stocks, pq.productId());
       stock.decreaseQuantity(pq.quantity());
     }
