@@ -62,7 +62,7 @@ class CartControllerTest {
     AddCartProductRequest request = new AddCartProductRequest(productId, quantity);
 
     // when
-    mockMvc.perform(post("/carts")
+    mockMvc.perform(post("/v1/carts")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andDo(print())
@@ -86,7 +86,7 @@ class CartControllerTest {
     given(cartService.getCart()).willReturn(List.of(cartProductResult1, cartProductResult2));
 
     // when
-    mockMvc.perform(get("/carts")
+    mockMvc.perform(get("/v1/carts")
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
@@ -103,7 +103,7 @@ class CartControllerTest {
     given(cartService.clearCart()).willReturn(List.of());
 
     // when
-    mockMvc.perform(put("/carts")
+    mockMvc.perform(put("/v1/carts")
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
@@ -118,7 +118,7 @@ class CartControllerTest {
     given(cartService.removeProduct(productId)).willReturn(List.of());
 
     // when
-    mockMvc.perform(delete("/carts/products/{productId}", productId))
+    mockMvc.perform(delete("/v1/carts/products/{productId}", productId))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("cart").isEmpty());

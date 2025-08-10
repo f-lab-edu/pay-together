@@ -1,0 +1,52 @@
+package com.paytogether.order.service.command;
+
+import com.paytogether.product.entity.Product;
+import com.paytogether.stock.entity.Stock;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import lombok.Getter;
+
+@Getter
+public class ProductQuantities {
+
+  private final List<ProductQuantity> productQuantities;
+
+  public ProductQuantities(List<ProductQuantity> productQuantities) {
+    this.productQuantities = productQuantities;
+  }
+
+  public List<Long> getProductIdList() {
+    return productQuantities.stream().map(ProductQuantity::productId).collect(Collectors.toList());
+  }
+
+  public ProductQuantities filterByStock(List<Stock> stocks) {
+    Map<Long, Integer> stockMap = stocks.stream()
+        .collect(Collectors.toMap(Stock::getProductId, Stock::getQuantity));
+
+    List<ProductQuantity> filtered = productQuantities.stream()
+        .filter(pq -> {
+          Integer stockQuantity = stockMap.get(pq.productId());
+          return stockQuantity != null && stockQuantity >= pq.quantity();
+        })
+        .collect(Collectors.toList());
+
+    return new ProductQuantities(filtered);
+  }
+
+  public ProductQuantities updateProductPrice(List<Product> products) {
+    List<ProductQuantity> filtered = products.stream().flatMap(
+            product -> productQuantities.stream()
+                .filter(pq -> pq.productId().equals(product.getId()))
+                .map(pq -> new ProductQuantity(pq.productId(), pq.quantity(), product.getPrice())))
+        .collect(Collectors.toList());
+
+    return new ProductQuantities(filtered);
+  }
+
+  public int calTotalPrice() {
+    return productQuantities.stream()
+        .mapToInt(pq -> pq.price() * pq.quantity())
+        .sum();
+  }
+}
