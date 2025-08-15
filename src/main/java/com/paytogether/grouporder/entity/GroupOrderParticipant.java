@@ -30,6 +30,9 @@ public class GroupOrderParticipant {
   @Column(nullable = false)
   private int quantity;
 
+  @Column(nullable = false)
+  private int totalPrice;
+
   @Enumerated(value = EnumType.STRING)
   @Column(nullable = false)
   private ParticipantStatus status;
