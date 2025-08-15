@@ -1,0 +1,12 @@
+### 공동구매 상품 등록
+POST localhost:8080/v1/group/orders
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "targetQuantity" : 10,
+  "price" : 1000,
+  "startTime" : "2025-08-15T09:00:00",
+  "endTime" : "2025-09-15T09:00:00",
+  "sellPolicyAfterDrop" : "false"
+}
