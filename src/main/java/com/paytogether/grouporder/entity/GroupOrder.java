@@ -46,4 +46,26 @@ public class GroupOrder {
 
   @Column(nullable = false)
   private boolean sellPolicyAfterDrop;
+
+  private GroupOrder(Long productId, int targetQuantity, int currentQuantity, int price,
+      LocalDateTime startTime, LocalDateTime endTime, GroupOrderStatus status,
+      boolean sellPolicyAfterDrop) {
+    this.productId = productId;
+    this.targetQuantity = targetQuantity;
+    this.currentQuantity = currentQuantity;
+    this.price = price;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.status = status;
+    this.sellPolicyAfterDrop = sellPolicyAfterDrop;
+  }
+
+  public static GroupOrder create(Long productId, int targetQuantity, int price,
+      LocalDateTime startTime, LocalDateTime endTime, boolean sellPolicyAfterDrop) {
+    int currentQuantity = 0;
+    GroupOrderStatus status = GroupOrderStatus.RECRUITING;
+    return new GroupOrder(productId, targetQuantity, currentQuantity, price, startTime, endTime,
+        status, sellPolicyAfterDrop);
+  }
+
 }
