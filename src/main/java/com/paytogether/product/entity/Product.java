@@ -44,7 +44,7 @@ public class Product {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
-  private Product(ProductType type, ProductSellingStatus sellingStatus, String name, int price,
+  protected Product(ProductType type, ProductSellingStatus sellingStatus, String name, int price,
       LocalDateTime createdAt) {
     this.type = type;
     this.sellingStatus = sellingStatus;
