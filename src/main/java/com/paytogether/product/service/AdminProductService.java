@@ -1,11 +1,14 @@
 package com.paytogether.product.service;
 
+import static com.paytogether.product.exception.ProductErrors.PRODUCT_NOT_FOUND;
+
 import com.paytogether.product.entity.EventProduct;
+import com.paytogether.product.exception.ProductException;
 import com.paytogether.product.repository.EventProductRedisRepository;
 import com.paytogether.product.repository.ProductRepository;
 import com.paytogether.product.service.command.CreateEventProductCommand;
 import com.paytogether.product.service.result.CreateEventProductResult;
-import com.paytogether.product.service.result.RegisterEventProductResult;
+import com.paytogether.product.service.result.EventProductResult;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AdminProductService {
 
-  private static final String EVENT_PRODUCT_KEY = "event:product:";
   private final ProductRepository productRepository;
   private final EventProductRedisRepository eventProductRedisRepository;
 
@@ -27,9 +29,18 @@ public class AdminProductService {
     return CreateEventProductResult.from(savedEventProduct);
   }
 
-  public RegisterEventProductResult registerEventProduct(Long productId, int totalQuantity,
+  public EventProductResult registerEventProduct(Long productId, int totalQuantity,
       long ttlSeconds) {
-    String key = EVENT_PRODUCT_KEY + productId;
+    String key = EventProductKeyUtil.getProductKey(productId);
     return eventProductRedisRepository.registerEventProduct(key, totalQuantity, ttlSeconds);
+  }
+
+  public boolean existsById(Long productId) {
+    return productRepository.existsById(productId);
+  }
+
+  public void deleteAllEventProduct() {
+    String key = EventProductKeyUtil.getAllKey();
+    eventProductRedisRepository.deleteAllEventProduct(key);
   }
 }
