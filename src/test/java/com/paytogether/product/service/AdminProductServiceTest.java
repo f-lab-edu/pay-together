@@ -6,7 +6,7 @@ import com.paytogether.product.entity.ProductType;
 import com.paytogether.product.repository.ProductRepository;
 import com.paytogether.product.service.command.CreateEventProductCommand;
 import com.paytogether.product.service.result.CreateEventProductResult;
-import com.paytogether.product.service.result.RegisterEventProductResult;
+import com.paytogether.product.service.result.EventProductResult;
 import java.time.LocalDateTime;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -53,7 +53,7 @@ class AdminProductServiceTest {
     int totalQuantity = 100;
     long ttlSeconds = 3600;
     // when
-    RegisterEventProductResult result = adminProductService.registerEventProduct(
+    EventProductResult result = adminProductService.registerEventProduct(
         productId, totalQuantity, ttlSeconds);
     // then
     SoftAssertions softAssertions = new SoftAssertions();
