@@ -3,10 +3,8 @@ package com.paytogether.cart.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.paytogether.cart.service.result.CartProductResult;
-import com.paytogether.member.entity.Gender;
-import com.paytogether.member.entity.Member;
+import com.paytogether.common.TestLoginHelper;
 import com.paytogether.member.repository.MemberRepository;
-import com.paytogether.auth.service.LoginService;
 import com.paytogether.product.entity.Product;
 import com.paytogether.product.entity.ProductSellingStatus;
 import com.paytogether.product.entity.ProductType;
@@ -19,7 +17,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 class CartServiceTest {
@@ -34,26 +31,21 @@ class CartServiceTest {
   private ProductRepository productRepository;
 
   @Autowired
-  private LoginService loginService;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private TestLoginHelper loginHelper;
 
   private Long productId1;
   private Long productId2;
 
   @BeforeEach
   void before() {
-    String password = "1234!678";
-    String email = "pay@spring.com";
-    Member member = Member.createMember(email, passwordEncoder.encode(password), "name", 100,
-        Gender.MALE,
-        "address", "01012345678", LocalDateTime.now());
-    memberRepository.save(member);
-    loginService.login(email, password);
+    loginHelper.loginAsTestUser();
 
-    Product p1 = productRepository.save(Product.create(ProductType.HOME_APPLIANCES, ProductSellingStatus.SELLING, "가전제품", 1000, LocalDateTime.now()));
-    Product p2 = productRepository.save(Product.create(ProductType.FOOD, ProductSellingStatus.SELLING, "식품", 1000, LocalDateTime.now()));
+    Product p1 = productRepository.save(
+        Product.create(ProductType.HOME_APPLIANCES, ProductSellingStatus.SELLING, "가전제품", 1000,
+            LocalDateTime.now()));
+    Product p2 = productRepository.save(
+        Product.create(ProductType.FOOD, ProductSellingStatus.SELLING, "식품", 1000,
+            LocalDateTime.now()));
 
     productId1 = p1.getId();
     productId2 = p2.getId();
