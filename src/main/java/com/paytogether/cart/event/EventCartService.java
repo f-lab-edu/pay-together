@@ -1,4 +1,4 @@
-package com.paytogether.cart.service;
+package com.paytogether.cart.event;
 
 import com.paytogether.auth.service.HttpSessionManager;
 import java.util.Arrays;

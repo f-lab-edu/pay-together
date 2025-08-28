@@ -3,6 +3,7 @@ package com.paytogether.cart.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.paytogether.auth.service.HttpSessionManager;
+import com.paytogether.cart.event.EventCartService;
 import com.paytogether.cart.repository.CartRepository;
 import com.paytogether.common.TestLoginHelper;
 import com.paytogether.product.repository.EventProductRedisRepository;

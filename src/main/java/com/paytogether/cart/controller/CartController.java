@@ -4,7 +4,7 @@ import com.paytogether.cart.controller.request.AddCartProductRequest;
 import com.paytogether.cart.controller.request.AddEventProductRequest;
 import com.paytogether.cart.controller.response.CartResponse;
 import com.paytogether.cart.service.CartService;
-import com.paytogether.cart.service.EventCartService;
+import com.paytogether.cart.event.EventCartService;
 import com.paytogether.cart.service.result.CartProductResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
