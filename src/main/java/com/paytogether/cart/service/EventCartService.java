@@ -13,6 +13,7 @@ public class EventCartService {
 
   private static final String CART_KEY = "cart:userid:";
   private static final String EVENT_PRODUCT = "event:product:";
+  private static final String EVENT_USER_SET = "event:product:%d:users";
   private final StringRedisTemplate redisTemplate;
   private final DefaultRedisScript<Long> decrementRemainingScript;
   private final HttpSessionManager httpSessionManager;
@@ -21,12 +22,14 @@ public class EventCartService {
     String eventProductKey = EVENT_PRODUCT + productId;
     Long memberId = getMemberIdInSession();
     String cartKey = CART_KEY + memberId;
+    String userSetKey = String.format(EVENT_USER_SET, productId);
 
     Long result = redisTemplate.execute(
         decrementRemainingScript,
-        Arrays.asList(eventProductKey, cartKey),
+        Arrays.asList(eventProductKey, cartKey, userSetKey),
         productId.toString(),
-        String.valueOf(quantity)
+        String.valueOf(quantity),
+        memberId.toString()
     );
 
     return result == 1 ? true : false;

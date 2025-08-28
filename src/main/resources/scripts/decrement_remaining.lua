@@ -1,7 +1,9 @@
 local eventKey = KEYS[1]
 local cartKey = KEYS[2]
+local userSetKey = KEYS[3]
 local productId = ARGV[1]
 local quantity = tonumber(ARGV[2])
+local userId = ARGV[3]
 
 local remaining = tonumber(redis.call("HGET", eventKey, "remaining"))
 if remaining == nil then
@@ -15,5 +17,7 @@ end
 redis.call("HINCRBY", eventKey, "remaining", -quantity)
 
 redis.call("HINCRBY", cartKey, productId, quantity)
+
+redis.call("SADD", userSetKey, userId)
 
 return 1 -- 성공
