@@ -18,6 +18,7 @@ public class TestLoginHelper {
   private final MemberRepository memberRepository;
 
   public Member loginAsTestUser() {
+    memberRepository.deleteAllInBatch();
     String password = "1234!678";
     String email = "pay@spring.com";
     Member member = Member.createMember(email, passwordEncoder.encode(password), "name", 100,

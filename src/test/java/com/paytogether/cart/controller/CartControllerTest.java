@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytogether.auth.config.WebConfig;
 import com.paytogether.auth.intercepter.LoginCheckInterceptor;
 import com.paytogether.cart.controller.request.AddCartProductRequest;
+import com.paytogether.cart.event.EventCartService;
 import com.paytogether.cart.service.CartService;
 import com.paytogether.cart.service.result.CartProductResult;
 import com.paytogether.config.SecurityConfig;
@@ -37,6 +38,9 @@ class CartControllerTest {
 
   @MockitoBean
   private CartService cartService;
+
+  @MockitoBean
+  private EventCartService eventCartService;
 
   @Autowired
   private ObjectMapper objectMapper;

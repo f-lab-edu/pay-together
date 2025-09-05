@@ -2,6 +2,7 @@ package com.paytogether.cart.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.paytogether.cart.repository.CartRepository;
 import com.paytogether.cart.service.result.CartProductResult;
 import com.paytogether.common.TestLoginHelper;
 import com.paytogether.member.repository.MemberRepository;
@@ -12,6 +13,7 @@ import com.paytogether.product.repository.ProductRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,10 +27,10 @@ class CartServiceTest {
   private CartService cartService;
 
   @Autowired
-  private MemberRepository memberRepository;
+  private ProductRepository productRepository;
 
   @Autowired
-  private ProductRepository productRepository;
+  private CartRepository cartRepository;
 
   @Autowired
   private TestLoginHelper loginHelper;
@@ -49,13 +51,13 @@ class CartServiceTest {
 
     productId1 = p1.getId();
     productId2 = p2.getId();
+
+    cartService.clearCart();
   }
 
   @AfterEach
   void after() {
-    cartService.clearCart();
-    memberRepository.deleteAll();
-    productRepository.deleteAll();
+    productRepository.deleteAllInBatch();
   }
 
   @DisplayName("카트에 상품을 추가하면 성공한다")
@@ -68,7 +70,7 @@ class CartServiceTest {
     assertThat(cartProductResults.get(0).quantity()).isEqualTo(10);
   }
 
-  @DisplayName("장바구니에 담긴 상품을 하나 삭제하면 하나만 삭제된다")
+  @DisplayName("장바구니에 담긴 상품을 삭제하면 삭제된다")
   @Test
   void deleteProduct() {
     // given
