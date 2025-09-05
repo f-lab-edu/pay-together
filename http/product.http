@@ -1,0 +1,15 @@
+### 이벤트 상품 조회
+GET localhost:8080/v1/products/event
+
+### 이벤트 상품 레디스에 등록
+POST localhost:8080/v1/admin/products/event
+Content-Type: application/json
+
+{
+  "productId" : 1,
+  "totalQuantity" : 10,
+  "ttlSeconds" : 3600
+}
+
+### 전체 이벤트 상품 레디스에서 삭제
+DELETE localhost:8080/v1/admin/products/event

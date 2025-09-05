@@ -7,6 +7,15 @@ Content-Type: application/json
   "quantity" : 10
 }
 
+### 이벤트 상품 저장
+POST localhost:8080/v1/carts/event
+Content-Type: application/json
+
+{
+  "productId" : 1,
+  "quantity" : 1
+}
+
 ### 장바구니 조회 @env=local
 GET localhost:8080/v1/carts
 
